@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import * as d3 from 'd3'
+import { root } from 'mathjs'
 import styles from './page.module.css'
 import { Single_Day } from 'next/font/google';
 
@@ -79,10 +80,6 @@ export default async function Home() {
   const midVertexAngle = (beginVertexAngle + endVertexAngle) / 2;
   // console.log(beginVertexAngle, endVertexAngle)
 
-  // let coverage = .5;
-  // c * 3.14 = 2 * Math.acos(d / 2) - d * Math.sqrt(1 - d ** 2 / 4)
-  // const coverage = (2 * Math.acos(d / 2) - d * Math.sqrt(1 - d ** 2 / 4)) / Math.PI; 
-
   const RenderCircle = ({svg}) => {
     let r = 100;
     const Circles = () => {
@@ -90,18 +87,24 @@ export default async function Home() {
       
       return([...Array(360).keys()].map(i => {
         let color = "";
+        const cx = r * Math.sin(-i);
+        const cy = r * Math.cos(-i);
         if(i === beginVertexAngle){
           color = "green";
+          // generate start circle center
+          return <circle cx={cx*2} cy={cy*2} fill={color} r="2px"></circle>
         }
         if(i === endVertexAngle){
           color = "red";
+          // generate end circle center
+          return <circle cx={cx*2} cy={cy*2} fill={color} r="2px"></circle>
         }
-        return <circle cx={r * Math.sin(-i) + r} cy={r * Math.cos(-i) + r} fill={color} r="2px"></circle>
+        return <circle cx={cx} cy={cy} fill={color} r="2px"></circle>
       }))
     }
     return(
-      <g>
-        <circle cx={'100px'} cy={'100px'} r={r} fill="blue"></circle>
+      <g transform="translate(300, 300)">
+        <circle cx={'0px'} cy={'0px'} r={r} fill="blue"></circle>
         <Circles/>
       </g>
       
@@ -122,7 +125,7 @@ export default async function Home() {
         />
       </div> */}
 
-      <svg width={600} height={600}>
+      <svg className={styles.graphic} width={600} height={600}>
         <RenderCircle />
       </svg>
       
