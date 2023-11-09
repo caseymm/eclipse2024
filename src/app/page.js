@@ -30,8 +30,8 @@ export default async function Home() {
     "apiversion": "4.0.1", 
     "geometry": {
       "coordinates": [
-        -122.65, 
-        46.67
+        -118.258611, 
+        34.052344
       ], 
       "height": "15m", 
       "type": "Point"
@@ -40,38 +40,38 @@ export default async function Home() {
       "day": 8, 
       "delta_t": "72.8s", 
       "description": "Sun in Partial Eclipse at this Location", 
-      "duration": "1h 43m 33.9s", 
+      "duration": "2h 15m 53.7s", 
       "event": "Solar Eclipse of 2024 April 08", 
       "local_data": [
         {
-          "altitude": "38.7", 
-          "azimuth": "127.1", 
+          "altitude": "43.1", 
+          "azimuth": "114.5", 
           "day": "8", 
           "phenomenon": "Eclipse Begins", 
-          "position_angle": "188.2", 
-          "time": "17:36:36.0", 
-          "vertex_angle": "221.8"
+          "position_angle": "203.3", 
+          "time": "17:06:07.8", 
+          "vertex_angle": "253.0"
         }, 
         {
-          "altitude": "44.9", 
-          "azimuth": "141.8", 
+          "altitude": "54.5", 
+          "azimuth": "132.4", 
           "day": "8", 
           "phenomenon": "Maximum Eclipse", 
-          "time": "18:27:28.9"
+          "time": "18:12:11.8"
         }, 
         {
-          "altitude": "49.4", 
-          "azimuth": "160.0", 
+          "altitude": "62.5", 
+          "azimuth": "162.3", 
           "day": "8", 
           "phenomenon": "Eclipse Ends", 
-          "position_angle": "94.5", 
-          "time": "19:20:09.9", 
-          "vertex_angle": "108.4"
+          "position_angle": "73.4", 
+          "time": "19:22:01.5", 
+          "vertex_angle": "88.5"
         }
       ], 
-      "magnitude": "0.318", 
+      "magnitude": "0.579", 
       "month": 4, 
-      "obscuration": "20.8%", 
+      "obscuration": "48.8%", 
       "year": 2024
     }, 
     "type": "Feature"
@@ -82,7 +82,7 @@ export default async function Home() {
 
   const beginVertexAngle = Math.round(parseFloat(begin.vertex_angle));
   const endVertexAngle = Math.round(parseFloat(end.vertex_angle));
-  const midVertexAngle = (beginVertexAngle + endVertexAngle) / 2;
+  const midVertexAngle = Math.round((beginVertexAngle + endVertexAngle) / 2);
   // console.log(beginVertexAngle, endVertexAngle)
   let lineData = [
     [],
@@ -106,11 +106,14 @@ export default async function Home() {
       // x = r * sin(-i),  y = r * cos(-i)
       [...Array(360).keys()].forEach(i => {
         let color = "";
-        let cx = r * Math.sin(-i);
-        let cy = r * Math.cos(-i);
+        let angle = (i - 270) * Math.PI / 180; // Convert degrees to radians and offset by 90 degrees
+        let cx = r * Math.cos(-angle);
+        let cy = r * Math.sin(-angle);
+
         if(i === beginVertexAngle){
           color = "green";
           // generate start circle center
+          console.log(cx, cy)
           cx = cx*2
           cy = cy*2
           lineData[0] = [cx, cy]
@@ -134,6 +137,7 @@ export default async function Home() {
            .attr('cx', cx)
            .attr('cy', cy)
            .attr('r', 2)
+           .attr('i', i)
            .attr('fill', color)
         }
       })
