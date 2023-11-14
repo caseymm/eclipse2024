@@ -105,3 +105,11 @@ a {
     color-scheme: dark;
   }
 }
+
+.mapboxgl-control-container{
+  color: white;
+}
+
+.suggestions{
+  color: white;
+}

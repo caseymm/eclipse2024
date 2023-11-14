@@ -6,6 +6,10 @@
   width: var(--max-width);
 }
 
+#map-container {
+  height: 100%;
+}
+
 /* .graphic{
   margin-top: 100px;
   margin-left: 100px;
