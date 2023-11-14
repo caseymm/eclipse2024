@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 import overlap from '../output.json';
 import { useEffect, useRef } from 'react';
 
-const RenderCircle = ({ beginVertexAngle, endVertexAngle, midVertexAngle, obscuration }) => {
+const RenderCircle = ({ data, obscuration }) => {
   let r = 100;
   let lineData = [
     [],
@@ -11,16 +11,27 @@ const RenderCircle = ({ beginVertexAngle, endVertexAngle, midVertexAngle, obscur
     []
   ];
 
+  const begin = data.properties.local_data.filter(item => item.phenomenon === 'Eclipse Begins')[0];
+  const end = data.properties.local_data.filter(item => item.phenomenon === 'Eclipse Ends')[0];
+
+  const beginVertexAngle = Math.round(parseFloat(begin.vertex_angle));
+  const endVertexAngle = Math.round(parseFloat(end.vertex_angle));
+  const midVertexAngle = Math.round((beginVertexAngle + endVertexAngle) / 2);
+  console.log(beginVertexAngle, endVertexAngle)
+
   const gRef = useRef();
   let moon;
   let moonPath;
 
   useEffect(() => {
     drawCircles();
-  }, []);
+  }, [data, obscuration]);
 
   const drawCircles = () => {
     const g = d3.select(gRef.current);
+    g.selectAll('path').remove();
+    g.selectAll('.math').remove();
+    g.selectAll('.moon').remove();
     // x = r * sin(-i),  y = r * cos(-i)
     [...Array(360).keys()].forEach(i => {
       let color = "";
@@ -56,8 +67,10 @@ const RenderCircle = ({ beginVertexAngle, endVertexAngle, midVertexAngle, obscur
          .attr('r', 2)
          .attr('i', i)
          .attr('fill', color)
+         .classed('math', true)
       }
     })
+    console.log(lineData)
     drawPaths();
   }
 
@@ -82,7 +95,8 @@ const RenderCircle = ({ beginVertexAngle, endVertexAngle, midVertexAngle, obscur
       // .attr('cx', lineData[0][0])
       // .attr('cy', lineData[0][1])
       .attr('r', 100)
-      .attr('fill', 'pink');
+      .attr('fill', 'pink')
+      .classed('moon', true);
     
     animateCircle();
   };

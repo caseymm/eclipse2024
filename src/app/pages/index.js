@@ -1,42 +1,86 @@
+"use client"
 import Image from 'next/image'
 import styles from '../page.module.css'
+import { useState, useEffect } from 'react';
 // import { Single_Day } from 'next/font/google';
 // import overlap from './output.json';
 import RenderCircle from '../components/RenderCircle';
 import Map from '../components/Map';
 import { getData } from './utils/serverComponent';
 
-export async function getServerSideProps(context) {
-  console.log('sflwl')
-  if(context){
-    console.log('context', context)
-    const { lon, lat } = context.query;
-    const data = await getData(lon, lat);
-  
-    return {
-      props: {
-        data,
-      },
-    };
-  } else{
-    console.log('else')
-    const lon = -80.08468071724317
-    const lat = 42.12912811069792
-    const data = await getData(lon, lat);
-  
-    return {
-      props: {
-        data,
-      },
-    };
+
+export default function Graphic() {
+
+  const initialData = {
+    "apiversion": "4.0.1", 
+    "geometry": {
+      "coordinates": [
+        -80.085281, 
+        42.129072
+      ], 
+      "height": "15m", 
+      "type": "Point"
+    }, 
+    "properties": {
+      "day": 8, 
+      "delta_t": "72.8s", 
+      "description": "Sun in Total Eclipse at this Location", 
+      "duration": "2h 28m 23.5s", 
+      "duration_of_totality": "3m 44.3s", 
+      "event": "Solar Eclipse of 2024 April 08", 
+      "local_data": [
+        {
+          "altitude": "54.3", 
+          "azimuth": "197.3", 
+          "day": "8", 
+          "phenomenon": "Eclipse Begins", 
+          "position_angle": "231.8", 
+          "time": "18:02:21.6", 
+          "vertex_angle": "219.2"
+        }, 
+        {
+          "altitude": "47.2", 
+          "azimuth": "224.3", 
+          "day": "8", 
+          "phenomenon": "Totality Begins", 
+          "position_angle": "66.5", 
+          "time": "19:16:17.2", 
+          "vertex_angle": "35.1"
+        }, 
+        {
+          "altitude": "47.0", 
+          "azimuth": "224.9", 
+          "day": "8", 
+          "phenomenon": "Maximum Eclipse", 
+          "time": "19:18:08.5"
+        }, 
+        {
+          "altitude": "46.8", 
+          "azimuth": "225.5", 
+          "day": "8", 
+          "phenomenon": "Totality Ends", 
+          "position_angle": "219.3", 
+          "time": "19:20:01.5", 
+          "vertex_angle": "187.2"
+        }, 
+        {
+          "altitude": "36.0", 
+          "azimuth": "244.1", 
+          "day": "8", 
+          "phenomenon": "Eclipse Ends", 
+          "position_angle": "54.3", 
+          "time": "20:30:45.1", 
+          "vertex_angle": "12.1"
+        }
+      ], 
+      "magnitude": "1.020", 
+      "month": 4, 
+      "obscuration": "100.0%", 
+      "year": 2024
+    }, 
+    "type": "Feature"
   }
-  
-}
-
-
-export default function Graphic({ data }) {
-  console.log('37', data)
-  // const [data, setData] = useState(null);
+  const [data, setData] = useState(initialData);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -52,18 +96,20 @@ export default function Graphic({ data }) {
   //   fetchData();
   // }, []); // Empty dependency array ensures the effect runs once on mount
 
-  // if (!data) {
-  //   // Render loading state or return null
-  //   return null;
-  // }
+  if (!data) {
+    // Render loading state or return null
+    return null;
+  }
 
-  // const begin = data.properties.local_data.filter(item => item.phenomenon === 'Eclipse Begins')[0];
-  // const end = data.properties.local_data.filter(item => item.phenomenon === 'Eclipse Ends')[0];
-
-  // const beginVertexAngle = Math.round(parseFloat(begin.vertex_angle));
-  // const endVertexAngle = Math.round(parseFloat(end.vertex_angle));
-  // const midVertexAngle = Math.round((beginVertexAngle + endVertexAngle) / 2);
-  // console.log(beginVertexAngle, endVertexAngle)
+  const handleDataUpdate = async (longitude, latitude) => {
+    try {
+      const updatedData = await getData(longitude, latitude);
+      setData(updatedData);
+      console.log('Data updated:', updatedData);
+    } catch (error) {
+      console.error('Error updating data:', error.message);
+    }
+  };
   
 
   return (
@@ -76,11 +122,9 @@ export default function Graphic({ data }) {
     //   priority
     // />
     <main className={styles.main}>
-      {/* <svg className={styles.graphic} width={600} height={600}>
+      <svg className={styles.graphic} width={600} height={600}>
         <RenderCircle
-          beginVertexAngle={beginVertexAngle}
-          endVertexAngle={endVertexAngle}
-          midVertexAngle={midVertexAngle}
+          data={data}
           obscuration={data.properties.obscuration}
         />
       </svg>
@@ -88,7 +132,7 @@ export default function Graphic({ data }) {
       <div className={styles.grid}>
         tktk
       </div>
-      <Map /> */}
+      <Map onDataUpdate={handleDataUpdate} />
     </main>
   )
 }

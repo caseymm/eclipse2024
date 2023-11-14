@@ -4,9 +4,10 @@ import { useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import { getData } from '../pages/utils/serverComponent';
+// import { getData } from '../pages/utils/serverComponent';
 
-const Map = () => {
+const Map = ({onDataUpdate}) => {
+
   useEffect(() => {
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2FzZXltbWlsZXIiLCJhIjoiY2lpeHY1bnJ1MDAyOHVkbHpucnB1dGRmbyJ9.TzUoCLwyeDoLjh3tkDSD4w';
     const map = new mapboxgl.Map({
@@ -28,11 +29,17 @@ const Map = () => {
     geocoder.on('result', (event) => {
       const longitude = event.result.center[0];
       const latitude = event.result.center[1];
-      getData(longitude, latitude)
+      onDataUpdate(longitude, latitude);
+      // const longitude = event.result.center[0];
+      // const latitude = event.result.center[1];
+      // getData(longitude, latitude).then((result) => {
+      //   // Call the callback function with the result
+      //   onDataUpdate(result);
+      // });
     });
 
     return () => map.remove(); // Cleanup on unmount
-  }, []);
+  }, [onDataUpdate]);
 
   return <div id="map-container" style={{ height: '400px' }} />;
 };
