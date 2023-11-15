@@ -16,8 +16,12 @@ const RenderCircle = ({ data, obscuration }) => {
 
   const beginVertexAngle = Math.round(parseFloat(begin.vertex_angle));
   const endVertexAngle = Math.round(parseFloat(end.vertex_angle));
-  const midVertexAngle = Math.round((beginVertexAngle + endVertexAngle) / 2);
-  console.log(beginVertexAngle, endVertexAngle)
+  let midVertexAngle = Math.round((beginVertexAngle + endVertexAngle) / 2);
+  if(midVertexAngle < 180 && data.geometry.coordinates[0] > -97){
+    midVertexAngle += 180;
+  }
+  console.log(data.properties.local_data)
+  // console.log(beginVertexAngle, endVertexAngle)
 
   const gRef = useRef();
   let moon;
@@ -54,6 +58,7 @@ const RenderCircle = ({ data, obscuration }) => {
         lineData[2] = [cx, cy]
       }
       if(i === midVertexAngle){
+        console.log(i, cx, cy)
         const d = overlap[obscuration.replace('%', '')]
         color = "pink";
         cx = cx*d
@@ -111,6 +116,7 @@ const RenderCircle = ({ data, obscuration }) => {
     moon.transition()
       .duration(5000) // Duration of the animation (in milliseconds)
       .attrTween('transform', translateAlongPath)
+      .ease(d3.easeLinear) // Apply linear easing
       .on('end', animateCircle); // Restart the animation when it ends
   };
 

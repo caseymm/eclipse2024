@@ -1,6 +1,6 @@
 // components/Map.js
 "use client"
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
@@ -39,9 +39,9 @@ const Map = ({onDataUpdate}) => {
     });
 
     return () => map.remove(); // Cleanup on unmount
-  }, [onDataUpdate]);
+  }, []);
 
   return <div id="map-container" style={{ height: '400px' }} />;
 };
 
-export default Map;
+export default React.memo(Map);
