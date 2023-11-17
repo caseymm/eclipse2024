@@ -10,6 +10,14 @@
   height: 100%;
 }
 
+.city{
+  display: inline-block;
+}
+
+.city h3{
+  text-align: center;
+}
+
 /* .graphic{
   margin-top: 100px;
   margin-left: 100px;

@@ -1,47 +1,42 @@
-// components/Map.js
-"use client"
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-// import { getData } from '../pages/utils/serverComponent';
 
-const Map = ({onDataUpdate}) => {
+const Map = ({ center }) => {
+  const [map, setMap] = useState(null);
 
   useEffect(() => {
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2FzZXltbWlsZXIiLCJhIjoiY2lpeHY1bnJ1MDAyOHVkbHpucnB1dGRmbyJ9.TzUoCLwyeDoLjh3tkDSD4w';
-    const map = new mapboxgl.Map({
-      container: 'map-container',
-      style: 'mapbox://styles/caseymmiler/cloxgjeqt00pk01pe0ack0ylb',
-      center: [-99.17, 39.85],
-      zoom: 3.5,
-    });
 
-    // Add Mapbox Geocoder
-    const geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      mapboxgl: mapboxgl,
-    });
+    if (!map) {
+      const newMap = new mapboxgl.Map({
+        container: 'map-container',
+        style: 'mapbox://styles/caseymmiler/clp32icao00xa01qo8jkabqet',
+        center: [-99.17, 39.85],
+        zoom: 3.5
+      });
 
-    map.addControl(geocoder);
+      setMap(newMap);
+    }
 
-    // Event listener for when a result is selected
-    geocoder.on('result', (event) => {
-      const longitude = event.result.center[0];
-      const latitude = event.result.center[1];
-      onDataUpdate(longitude, latitude);
-      // const longitude = event.result.center[0];
-      // const latitude = event.result.center[1];
-      // getData(longitude, latitude).then((result) => {
-      //   // Call the callback function with the result
-      //   onDataUpdate(result);
-      // });
-    });
+    return () => {
+      if (map) {
+        map.remove(); // Cleanup on unmount
+      }
+    };
+  }, []); // Only re-run the effect if `map` or `center` changes
 
-    return () => map.remove(); // Cleanup on unmount
-  }, []);
+  useEffect(() => {
+    if (map && center) {
+      // Update the map's center when the `center` prop changes
+      map.flyTo({
+        center,
+        zoom: 12 // You can adjust the zoom level as needed
+      });
+    }
+  }, [map, center]);
 
-  return <div id="map-container" style={{ height: '400px' }} />;
+  return <div id="map-container" style={{ height: '600px' }} />;
 };
 
-export default React.memo(Map);
+export default Map;

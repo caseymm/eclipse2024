@@ -3,8 +3,7 @@ import * as d3 from 'd3'
 import overlap from '../output.json';
 import { useEffect, useRef } from 'react';
 
-const RenderCircle = ({ data, obscuration }) => {
-  let r = 100;
+const RenderCircle = ({ data, obscuration, radius, wxh }) => {
   let lineData = [
     [],
     [],
@@ -20,7 +19,7 @@ const RenderCircle = ({ data, obscuration }) => {
   if(midVertexAngle < 180 && data.geometry.coordinates[0] > -97){
     midVertexAngle += 180;
   }
-  console.log(data.properties.local_data)
+  // console.log(data.properties.local_data)
   // console.log(beginVertexAngle, endVertexAngle)
 
   const gRef = useRef();
@@ -40,8 +39,8 @@ const RenderCircle = ({ data, obscuration }) => {
     [...Array(360).keys()].forEach(i => {
       let color = "";
       let angle = (i - 270) * Math.PI / 180; // Convert degrees to radians and offset by 90 degrees
-      let cx = r * Math.cos(-angle);
-      let cy = r * Math.sin(-angle);
+      let cx = radius * Math.cos(-angle);
+      let cy = radius * Math.sin(-angle);
 
       if(i === beginVertexAngle){
         color = "green";
@@ -58,7 +57,6 @@ const RenderCircle = ({ data, obscuration }) => {
         lineData[2] = [cx, cy]
       }
       if(i === midVertexAngle){
-        console.log(i, cx, cy)
         const d = overlap[obscuration.replace('%', '')]
         color = "pink";
         cx = cx*d
@@ -69,13 +67,12 @@ const RenderCircle = ({ data, obscuration }) => {
         g.append('circle')
          .attr('cx', cx)
          .attr('cy', cy)
-         .attr('r', 2)
+         .attr('r', 0)
          .attr('i', i)
          .attr('fill', color)
          .classed('math', true)
       }
     })
-    console.log(lineData)
     drawPaths();
   }
 
@@ -99,7 +96,7 @@ const RenderCircle = ({ data, obscuration }) => {
     moon = g.append('circle')
       // .attr('cx', lineData[0][0])
       // .attr('cy', lineData[0][1])
-      .attr('r', 100)
+      .attr('r', radius)
       .attr('fill', 'pink')
       .classed('moon', true);
     
@@ -134,8 +131,8 @@ const RenderCircle = ({ data, obscuration }) => {
   };
 
   return(
-    <g ref={gRef} transform="translate(300, 300)">
-      <circle cx={'0px'} cy={'0px'} r={r} fill="blue"></circle>
+    <g ref={gRef} transform={`translate(${wxh/2}, ${wxh/2})`}>
+      <circle cx={'0px'} cy={'0px'} r={radius} fill="blue"></circle>
     </g>
     
   )

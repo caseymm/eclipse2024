@@ -3,8 +3,9 @@ import Image from 'next/image'
 import styles from '../page.module.css'
 import { useState, useEffect } from 'react';
 // import { Single_Day } from 'next/font/google';
-// import overlap from './output.json';
+import cities from '../cities.json';
 import RenderCircle from '../components/RenderCircle';
+import Geocoder from '../components/Geocoder';
 import Map from '../components/Map';
 import { getData } from './utils/serverComponent';
 
@@ -110,6 +111,38 @@ export default function Graphic() {
       console.error('Error updating data:', error.message);
     }
   };
+
+  const Cities = () => {
+    const [cityData, setCityData] = useState([]);
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        const promises = cities.map(async (c) => {
+          let data = await getData(c.longitude, c.latitude);
+          data.city = c.city;
+          return data;
+        });
+  
+        const cityDataResults = await Promise.all(promises);
+        setCityData(cityDataResults);
+      };
+  
+      fetchData();
+    }, []);
+  
+    return (
+      <div>
+        {cityData.map((data, index) => (
+          <div className={styles.city} key={data.city}>
+            <h3>{data.city}</h3>
+            <svg key={index} className={styles.graphic} width={200} height={200}>
+              <RenderCircle data={data} obscuration={data.properties.obscuration} radius={30} wxh={200} />
+            </svg>
+          </div>
+        ))}
+      </div>
+    );
+  };
   
 
   return (
@@ -122,17 +155,22 @@ export default function Graphic() {
     //   priority
     // />
     <main className={styles.main}>
+      <Cities />
+
       <svg className={styles.graphic} width={600} height={600}>
         <RenderCircle
           data={data}
           obscuration={data.properties.obscuration}
+          radius={100}
+          wxh={600}
         />
       </svg>
 
       <div className={styles.grid}>
         tktk
       </div>
-      <Map onDataUpdate={handleDataUpdate} />
+      <Geocoder onDataUpdate={handleDataUpdate}  />
+      <Map center={data.geometry.coordinates} />
     </main>
   )
 }
