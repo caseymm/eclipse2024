@@ -13,6 +13,7 @@ import { getData } from './utils/serverComponent';
 export default function Graphic() {
 
   const initialData = {
+    "placeName": "Erie, PA",
     "apiversion": "4.0.1", 
     "geometry": {
       "coordinates": [
@@ -102,9 +103,10 @@ export default function Graphic() {
     return null;
   }
 
-  const handleDataUpdate = async (longitude, latitude) => {
+  const handleDataUpdate = async (longitude, latitude, placeName) => {
     try {
       const updatedData = await getData(longitude, latitude);
+      updatedData.placeName = placeName;
       setData(updatedData);
       console.log('Data updated:', updatedData);
     } catch (error) {
@@ -157,7 +159,15 @@ export default function Graphic() {
     <main className={styles.main}>
       <Cities />
 
+      <h1>{data.placeName}</h1>
       <svg className={styles.graphic} width={600} height={600}>
+        <defs>
+          <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="0%" style={{stopColor: 'rgba(255, 255, 0, 0.5)', stopOpacity: 1}} />
+            <stop offset="100%" style={{stopColor: 'rgba(255, 255, 0, 0)', stopOpacity: 1}} />
+          </radialGradient>
+        </defs>
+        <circle cx="300" cy="300" r="175" fill="url(#grad1)" />
         <RenderCircle
           data={data}
           obscuration={data.properties.obscuration}
