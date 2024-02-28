@@ -96,6 +96,43 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+main{
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  // height: 100vh;
+}
+
+.hed{
+  display: flex;
+  flex-direction: row;
+  .title{
+    flex-grow: 1;
+    height: 100vh;
+    
+    .container{
+      position: absolute;
+      overflow-y: scroll;
+      height: 100vh;
+      width: 50%;
+      div{
+        height: 800px;
+        background-color: blue;
+        &:nth-of-type(2){
+          background-color: red;
+        }
+        &:nth-of-type(3){
+          background-color: yellow;
+        }
+        &:nth-of-type(4){
+          background-color: green;
+        }
+      }
+    }
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -115,3 +152,8 @@ a {
   color: white;
 }
 
+#usMap{
+  position: fixed;
+  bottom: -6px;
+  right: 0px;
+}

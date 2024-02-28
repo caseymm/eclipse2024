@@ -1,12 +1,14 @@
 "use client"
 import Image from 'next/image'
-import styles from '../page.module.css'
+import styles from '../page.module.scss'
 import { useState, useEffect } from 'react';
 // import { Single_Day } from 'next/font/google';
-import cities from '../cities.json';
+import cities from '../data/cities.json';
 import RenderCircle from '../components/RenderCircle';
 import Geocoder from '../components/Geocoder';
 import Map from '../components/Map';
+// import USMap from '../components/usMap';
+import TitleScroll from '../components/TitleScroll'; 
 import { getData } from './utils/serverComponent';
 
 
@@ -82,6 +84,14 @@ export default function Graphic() {
     }, 
     "type": "Feature"
   }
+
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const handleScroll = (position) => {
+    // Update the scroll position in the parent component
+    setScrollPosition(position);
+  };
+
   const [data, setData] = useState(initialData);
 
   // useEffect(() => {
@@ -145,6 +155,17 @@ export default function Graphic() {
       </div>
     );
   };
+
+  // navigator.geolocation.getCurrentPosition(function(position) {
+  //     // Code to handle the position object
+  //     console.log(position)
+  //     console.log("Latitude: " + position.coords.latitude);
+  //     console.log("Longitude: " + position.coords.longitude);
+  //     data.geometry.coordinates = [position.coords.longitude, position.coords.latitude];
+  // }, function(error) {
+  //     // Code to handle any errors
+  //     console.error("Error getting location:", error);
+  // });
   
 
   return (
@@ -157,9 +178,15 @@ export default function Graphic() {
     //   priority
     // />
     <main className={styles.main}>
-      <Cities />
+      <div className="hed">
+        <Map currentLocation={data.geometry.coordinates} center={data.geometry.coordinates} scrollPos={scrollPosition} />
+        <TitleScroll onScroll={handleScroll} />
+      </div>
+      
+      {/* <Cities /> */}
 
       <h1>{data.placeName}</h1>
+      <Geocoder onDataUpdate={handleDataUpdate}  />
       <svg className={styles.graphic} width={600} height={600}>
         <defs>
           <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
@@ -176,11 +203,13 @@ export default function Graphic() {
         />
       </svg>
 
+      {/* <USMap currentLocation={data.geometry.coordinates}></USMap> */}
+
       <div className={styles.grid}>
         tktk
       </div>
-      <Geocoder onDataUpdate={handleDataUpdate}  />
-      <Map center={data.geometry.coordinates} />
+      
+      
     </main>
   )
 }

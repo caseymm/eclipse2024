@@ -90,7 +90,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
     moonPath = g.append('path')
       .datum(lineData) // Bind the data
       .attr('d', line) // Use the line generator
-      .attr('stroke', 'red')
+      // .attr('stroke', 'red')
       .attr('fill', 'none');
     
     moon = g.append('circle')
