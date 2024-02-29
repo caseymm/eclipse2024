@@ -169,47 +169,35 @@ export default function Graphic() {
   
 
   return (
-    // <Image
-    //   className={styles.logo}
-    //   src="/next.svg"
-    //   alt="Next.js Logo"
-    //   width={180}
-    //   height={37}
-    //   priority
-    // />
     <main className={styles.main}>
+      <Map currentLocation={data.geometry.coordinates} center={data.geometry.coordinates} scrollPos={scrollPosition} />
       <div className="hed">
-        <Map currentLocation={data.geometry.coordinates} center={data.geometry.coordinates} scrollPos={scrollPosition} />
         <TitleScroll onScroll={handleScroll} />
+        <div className="graphic">
+          <h1>{data.placeName}</h1>
+          <Geocoder onDataUpdate={handleDataUpdate}  />
+          <svg className={styles.graphic} width={600} height={600}>
+            <defs>
+              <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" style={{stopColor: 'rgba(255, 255, 0, 0.5)', stopOpacity: 1}} />
+                <stop offset="100%" style={{stopColor: 'rgba(255, 255, 0, 0)', stopOpacity: 1}} />
+              </radialGradient>
+            </defs>
+            <circle cx="300" cy="300" r="175" fill="url(#grad1)" />
+            <RenderCircle
+              data={data}
+              obscuration={data.properties.obscuration}
+              radius={100}
+              wxh={600}
+            />
+          </svg>
+        </div>
       </div>
-      
       {/* <Cities /> */}
-
-      <h1>{data.placeName}</h1>
-      <Geocoder onDataUpdate={handleDataUpdate}  />
-      <svg className={styles.graphic} width={600} height={600}>
-        <defs>
-          <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-            <stop offset="0%" style={{stopColor: 'rgba(255, 255, 0, 0.5)', stopOpacity: 1}} />
-            <stop offset="100%" style={{stopColor: 'rgba(255, 255, 0, 0)', stopOpacity: 1}} />
-          </radialGradient>
-        </defs>
-        <circle cx="300" cy="300" r="175" fill="url(#grad1)" />
-        <RenderCircle
-          data={data}
-          obscuration={data.properties.obscuration}
-          radius={100}
-          wxh={600}
-        />
-      </svg>
-
       {/* <USMap currentLocation={data.geometry.coordinates}></USMap> */}
-
       <div className={styles.grid}>
         tktk
       </div>
-      
-      
     </main>
   )
 }

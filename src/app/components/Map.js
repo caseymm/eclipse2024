@@ -7,12 +7,12 @@ const Map = ({ center, scrollPos }) => {
   const [map, setMap] = useState(null);
 
   function pointOnLine(pos) {
-    
-    let position = Math.round(pos * 100)
-    console.log(position)
+    let totalLen = centerPath.features[0]['geometry']['coordinates'][0].length;
+    let cPos = Math.round((pos * totalLen) / 100);
+    console.log(cPos)
     return {
         'type': 'Point',
-        'coordinates': centerPath.features[0]['geometry']['coordinates'][0][position]
+        'coordinates': centerPath.features[0]['geometry']['coordinates'][0][cPos]
     };
   }
 
@@ -63,23 +63,31 @@ const Map = ({ center, scrollPos }) => {
         });
 
 
-    });
-
-    // fly to geolocated position
+      });
+      // fly to geolocated position
       setMap(newMap);
     }
+
+    // TO DO: fix rendering twice -- hack is to display:none first map canvas
 
     return () => {
       if (map) {
         map.remove(); // Cleanup on unmount
       }
     };
-  }, []); // Only re-run the effect if `map` or `center` changes
+  }, [map]); // Only re-run the effect if `map` or `center` changes
 
   useEffect(() => {
     if(map && scrollPos){
-      console.log(scrollPos)
-      map.getSource('point').setData(pointOnLine(scrollPos));
+      if(scrollPos === 99){
+        map.flyTo({
+          center,
+          zoom: 12 // You can adjust the zoom level as needed
+        });
+      } else {
+        // console.log(scrollPos)
+        map.getSource('point').setData(pointOnLine(scrollPos));
+      }
     }
   }, [map, scrollPos])
 
@@ -90,11 +98,17 @@ const Map = ({ center, scrollPos }) => {
       //   center,
       //   zoom: 12 // You can adjust the zoom level as needed
       // });
+      if(scrollPos === 99){
+        map.flyTo({
+          center,
+          zoom: 12 // You can adjust the zoom level as needed
+        });
+      }
     }
     
   }, [map, center]);
 
-  return <div id="map-container" style={{ height: '600px', width: '50%' }} />;
+  return <div id="map-container" style={{ height: '100vh', width: '50%', position: 'fixed' }} />;
 };
 
 export default Map;
