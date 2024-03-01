@@ -95,7 +95,8 @@ export default function Graphic() {
   const [data, setData] = useState(initialData);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const intervalRef = useRef(null);
+  // const intervalRef = useRef(null);
+  const animationRef = useRef(null);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -170,23 +171,32 @@ export default function Graphic() {
     setIsPlaying((prevState) => !prevState); // Toggle play state
   };
 
-  useEffect(() => {
+  const animate = (timestamp) => {
+    setCurrentTime((prevTime) => {
+      const nextTime = prevTime + (timestamp - animationRef.current) * 0.001; // Convert milliseconds to seconds
+      if (nextTime >= 1) {
+        setCurrentTime(0); // Reset current time
+        cancelAnimationFrame(animationRef.current);
+        // setIsPlaying(false); // Stop playing at the end
+        return 0; // Clamp to 1
+      }
+      return nextTime;
+    });
+    animationRef.current = timestamp;
     if (isPlaying) {
-      intervalRef.current = setInterval(() => {
-        setCurrentTime((prevTime) => {
-          const nextTime = prevTime + 0.001; // Increment by your desired step size
-          if (nextTime >= 1) {
-            clearInterval(intervalRef.current);
-            setIsPlaying(false);
-            return 1; // Clamp to 1 if exceeds
-          }
-          return nextTime;
-        });
-      }, 8); // Adjust speed as needed
-    } else {
-      clearInterval(intervalRef.current);
+      requestAnimationFrame(animate);
     }
-    return () => clearInterval(intervalRef.current); // Clear interval on component unmount
+  };
+
+  useEffect(() => {
+    console.log(isPlaying)
+    if (isPlaying) {
+      animationRef.current = performance.now();
+      requestAnimationFrame(animate);
+    } else {
+      cancelAnimationFrame(animationRef.current);
+    }
+    return () => cancelAnimationFrame(animationRef.current); // Cancel animation frame on component unmount
   }, [isPlaying]); // Run effect whenever isPlaying changes
 
 
