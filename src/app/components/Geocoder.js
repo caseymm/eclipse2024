@@ -30,7 +30,7 @@ const Geocoder = ({ onDataUpdate }) => {
 
   const handleResultSelect = (result) => {
     console.log(result)
-    setQuery(result.place_name); // Update the input with the selected suggestion
+    setQuery(result.place_name.replace(', United States', '')); // Update the input with the selected suggestion
     const longitude = result.center[0];
     const latitude = result.center[1];
     onDataUpdate(longitude, latitude, result.place_name);

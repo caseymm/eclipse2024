@@ -1,9 +1,9 @@
 "use client"
 import * as d3 from 'd3'
 import overlap from '../output.json';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
-const RenderCircle = ({ data, obscuration, radius, wxh }) => {
+const RenderCircle = ({ data, obscuration, radius, wxh, currentTime }) => {
   let lineData = [
     [],
     [],
@@ -21,14 +21,13 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
   }
   // console.log(data.properties.local_data)
   // console.log(beginVertexAngle, endVertexAngle)
-
   const gRef = useRef();
   let moon;
   let moonPath;
 
   useEffect(() => {
     drawCircles();
-  }, [data, obscuration]);
+  }, [data, obscuration, currentTime]);
 
   const drawCircles = () => {
     const g = d3.select(gRef.current);
@@ -104,28 +103,18 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
   };
 
   const animateCircle = () => {
-    // Select the circle element
-
-    // const circle = d3.select(circleRef.current);
-    // console.log(circle)
-
-    // Use D3 transition to animate the circle along the path
     moon.transition()
-      .duration(5000) // Duration of the animation (in milliseconds)
+      .duration(5000) 
       .attrTween('transform', translateAlongPath)
-      .ease(d3.easeLinear) // Apply linear easing
-      .on('end', animateCircle); // Restart the animation when it ends
+      .ease(d3.easeLinear)
+      .on('end', animateCircle);
   };
 
   const translateAlongPath = () => {
     return (t) => {
-      // Get the current position along the path
       const path = moonPath.node();
       const l = path.getTotalLength();
-      const p = path.getPointAtLength(t * l);
-      // console.log(path)
-
-      // Translate the circle to the new position
+      const p = path.getPointAtLength(currentTime * l);
       return `translate(${p.x},${p.y})`;
     };
   };
@@ -134,7 +123,6 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
     <g ref={gRef} transform={`translate(${wxh/2}, ${wxh/2})`}>
       <circle cx={'0px'} cy={'0px'} r={radius} fill="blue"></circle>
     </g>
-    
   )
 }
 

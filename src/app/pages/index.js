@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image'
 import styles from '../page.module.scss'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 // import { Single_Day } from 'next/font/google';
 import cities from '../data/cities.json';
 import RenderCircle from '../components/RenderCircle';
@@ -93,6 +93,9 @@ export default function Graphic() {
   };
 
   const [data, setData] = useState(initialData);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const intervalRef = useRef(null);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -116,7 +119,10 @@ export default function Graphic() {
   const handleDataUpdate = async (longitude, latitude, placeName) => {
     try {
       const updatedData = await getData(longitude, latitude);
-      updatedData.placeName = placeName;
+      const maxTimeInt = Math.round(updatedData.properties.local_data.length/2) - 1;
+      const maxTime = updatedData.properties.local_data[maxTimeInt].time;
+      updatedData.maxTime = maxTime;
+      // updatedData.placeName = placeName;
       setData(updatedData);
       console.log('Data updated:', updatedData);
     } catch (error) {
@@ -156,17 +162,33 @@ export default function Graphic() {
     );
   };
 
-  // navigator.geolocation.getCurrentPosition(function(position) {
-  //     // Code to handle the position object
-  //     console.log(position)
-  //     console.log("Latitude: " + position.coords.latitude);
-  //     console.log("Longitude: " + position.coords.longitude);
-  //     data.geometry.coordinates = [position.coords.longitude, position.coords.latitude];
-  // }, function(error) {
-  //     // Code to handle any errors
-  //     console.error("Error getting location:", error);
-  // });
-  
+  const handleScrubberChange = (e) => {
+    setCurrentTime(parseFloat(e.target.value));
+  };
+
+  const handlePlayClick = () => {
+    setIsPlaying((prevState) => !prevState); // Toggle play state
+  };
+
+  useEffect(() => {
+    if (isPlaying) {
+      intervalRef.current = setInterval(() => {
+        setCurrentTime((prevTime) => {
+          const nextTime = prevTime + 0.001; // Increment by your desired step size
+          if (nextTime >= 1) {
+            clearInterval(intervalRef.current);
+            setIsPlaying(false);
+            return 1; // Clamp to 1 if exceeds
+          }
+          return nextTime;
+        });
+      }, 8); // Adjust speed as needed
+    } else {
+      clearInterval(intervalRef.current);
+    }
+    return () => clearInterval(intervalRef.current); // Clear interval on component unmount
+  }, [isPlaying]); // Run effect whenever isPlaying changes
+
 
   return (
     <main className={styles.main}>
@@ -174,8 +196,35 @@ export default function Graphic() {
       <div className="hed">
         <TitleScroll onScroll={handleScroll} />
         <div className="graphic">
-          <h1>{data.placeName}</h1>
-          <Geocoder onDataUpdate={handleDataUpdate}  />
+          {/* <h1>{data.placeName}</h1> */}
+          <div>
+            <Geocoder onDataUpdate={handleDataUpdate} />
+            will experience a maximum of {data.properties.obscuration} obscuration at {data.maxTime}. The eclipse will last a 
+            total of {data.properties.duration}, starting at {data.properties.local_data[0].time} and ending 
+            at {data.properties.local_data[data.properties.local_data.length - 1].time}.
+          </div>
+          <div
+            onClick={handlePlayClick}
+            style={{
+              border: '1px solid black',
+              padding: '5px',
+              margin: '5px',
+              display: 'inline-block',
+              cursor: 'pointer',
+            }}
+          >
+            {isPlaying ? 'Pause' : 'Play'}
+          </div>
+          <input
+            className="scrubber"
+            type="range"
+            min="0"
+            max="1"
+            step="0.001"
+            value={currentTime}
+            onChange={handleScrubberChange}
+          />
+          
           <svg className={styles.graphic} width={600} height={600}>
             <defs>
               <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
@@ -189,6 +238,7 @@ export default function Graphic() {
               obscuration={data.properties.obscuration}
               radius={100}
               wxh={600}
+              currentTime={currentTime}
             />
           </svg>
         </div>

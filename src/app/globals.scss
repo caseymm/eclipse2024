@@ -138,6 +138,11 @@ main{
 .graphic{
   height: 100vh;
   padding-top: 100px;
+
+  .scrubber{
+    width: calc(100% - 100px);
+    display: inline;
+  }
 }
 
 a {
