@@ -174,15 +174,16 @@ export default function Graphic() {
     if (isPlaying) {
       intervalRef.current = setInterval(() => {
         setCurrentTime((prevTime) => {
-          const nextTime = prevTime + 0.001; // Increment by your desired step size
+          const nextTime = prevTime + 0.005; // Increment by your desired step size
           if (nextTime >= 1) {
+            setCurrentTime(0)
             clearInterval(intervalRef.current);
             setIsPlaying(false);
-            return 1; // Clamp to 1 if exceeds
+            return 0; // Clamp to 1 if exceeds
           }
           return nextTime;
         });
-      }, 8); // Adjust speed as needed
+      }, 30); // Adjust speed as needed
     } else {
       clearInterval(intervalRef.current);
     }

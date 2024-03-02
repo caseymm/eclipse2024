@@ -104,7 +104,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh, currentTime }) => {
 
   const animateCircle = () => {
     moon.transition()
-      .duration(5000) 
+      .duration(10) 
       .attrTween('transform', translateAlongPath)
       .ease(d3.easeLinear)
       .on('end', animateCircle);
