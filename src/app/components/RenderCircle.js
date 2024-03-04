@@ -26,7 +26,6 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
   const gRef = useRef();
   const moon = useRef(null);
   const moonPath = useRef(null);
-  const [isPaused, setPaused] = useState(false);
 
   useEffect(() => {
     drawCircles();
@@ -106,86 +105,51 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
     animateCircle();
   };
 
-  // const animateCircle = () => {
-  //   const transition = moon.transition()
-  //     .duration(5000) // Duration of the animation (in milliseconds)
-  //     .attrTween('transform', translateAlongPath)
-  //     .ease(d3.easeLinear) // Apply linear easing
-  //     .on('end', animateCircle); // Restart the animation when it ends
-    
-  //   if (isPaused) {
-  //     transition.pause();
-  //   } else {
-  //     transition.resume();
-  //   }
-  // };
   const animateCircle = () => {
     if (moon.current) {
-      moon.current.interrupt(); // Interrupt any existing transition
-
-      moon.current.transition()
-        .duration(5000) // Adjust duration based on remaining progress
-        .ease(d3.easeLinear)
-        .attrTween('transform', translateAlongPath)
-        .on('end', animateCircle);
+      animateFirstHalf();
     }
   };
-
-  const translateAlongPath = (t) => {
+  
+  const animateFirstHalf = () => {
+    moon.current.interrupt(); // Interrupt any existing transition
+  
+    moon.current.transition()
+      .duration(2500) // Half the duration for the first half
+      .ease(d3.easeLinear)
+      // .attrTween('transform', translateAlongPath(0, 0.5))
+      .attrTween('transform', (d, i, nodes) => translateAlongPath(d, i, nodes, 0, 0.5)) // Pass additional parameters
+      .on('end', () => {
+        // Optionally, set state or ref here to indicate the first half is done
+        // You can then use a button or event to trigger animateSecondHalf
+        setTimeout(() => {
+          animateSecondHalf();
+        }, 500)
+        
+      });
+  };
+  
+  const animateSecondHalf = () => {
+    moon.current.transition()
+      .duration(2500) // Remaining half duration
+      .ease(d3.easeLinear)
+      // .attrTween('transform', translateAlongPath(0.5, 1))
+      .attrTween('transform', (d, i, nodes) => translateAlongPath(d, i, nodes, 0.5, 1))
+      .on('end', animateCircle);
+  };
+  
+  const translateAlongPath = (d, i, nodes, startPercent, endPercent) => {
     return (t) => {
+      const scaledT = startPercent + (endPercent - startPercent) * t; // Scale t based on start and end percentages
       const path = moonPath.current.node();
       const l = path.getTotalLength();
-      const p = path.getPointAtLength(t * l);
-
-      // console.log(t, t.toFixed(2))
-
-      // console.log(t)
-      if(t.toFixed(2) === '0.50'){
-        console.log('match')
-        setPaused(true);
-        // setTimeout(() => { 
-        //   console.log('settimeout')
-        //   console.log(isPaused)
-        //   setPaused(false);
-        // }, 2000)
-        console.log(isPaused)
-      }
-
+      const p = path.getPointAtLength(scaledT * l);
+  
       // Translate the circle to the new position
       return `translate(${p.x},${p.y})`;
     };
   };
-
-  // const translateAlongPath = () => {
-  //   return (t) => {
-  //     // Get the current position along the path
-  //     const path = moonPath.node();
-  //     const l = path.getTotalLength();
-  //     const p = path.getPointAtLength(t * l);
-
-  //     if (onProgressChange) {
-  //         onProgressChange(t);
-  //     }
-
-  //     // console.log(t)
-  //     if(t.toFixed(2) === 0.50){
-  //       setPaused(true);
-  //       setTimeout(() => { 
-  //         setPaused(false);
-  //       }, 2000)
-  //     }
-
-  //     // Translate the circle to the new position
-  //     return `translate(${p.x},${p.y})`;
-  //   };
-  // };
   
-
-  useEffect(() => {
-    if (!isPaused) {
-      animateCircle();
-    }
-  }, [isPaused]);
 
 
   return(
