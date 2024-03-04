@@ -13,6 +13,7 @@ import { getData } from './utils/serverComponent';
 
 
 export default function Graphic() {
+  console.log('ggg')
 
   const initialData = {
     "placeName": "Erie, PA",
@@ -93,9 +94,7 @@ export default function Graphic() {
   };
 
   const [data, setData] = useState(initialData);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const intervalRef = useRef(null);
+  // console.log(progress)
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -162,35 +161,6 @@ export default function Graphic() {
     );
   };
 
-  const handleScrubberChange = (e) => {
-    setCurrentTime(parseFloat(e.target.value));
-  };
-
-  const handlePlayClick = () => {
-    setIsPlaying((prevState) => !prevState); // Toggle play state
-  };
-
-  useEffect(() => {
-    if (isPlaying) {
-      intervalRef.current = setInterval(() => {
-        setCurrentTime((prevTime) => {
-          const nextTime = prevTime + 0.005; // Increment by your desired step size
-          if (nextTime >= 1) {
-            setCurrentTime(0)
-            clearInterval(intervalRef.current);
-            setIsPlaying(false);
-            return 0; // Clamp to 1 if exceeds
-          }
-          return nextTime;
-        });
-      }, 30); // Adjust speed as needed
-    } else {
-      clearInterval(intervalRef.current);
-    }
-    return () => clearInterval(intervalRef.current); // Clear interval on component unmount
-  }, [isPlaying]); // Run effect whenever isPlaying changes
-
-
   return (
     <main className={styles.main}>
       <Map currentLocation={data.geometry.coordinates} center={data.geometry.coordinates} scrollPos={scrollPosition} />
@@ -204,27 +174,6 @@ export default function Graphic() {
             total of {data.properties.duration}, starting at {data.properties.local_data[0].time} and ending 
             at {data.properties.local_data[data.properties.local_data.length - 1].time}.
           </div>
-          <div
-            onClick={handlePlayClick}
-            style={{
-              border: '1px solid black',
-              padding: '5px',
-              margin: '5px',
-              display: 'inline-block',
-              cursor: 'pointer',
-            }}
-          >
-            {isPlaying ? 'Pause' : 'Play'}
-          </div>
-          <input
-            className="scrubber"
-            type="range"
-            min="0"
-            max="1"
-            step="0.001"
-            value={currentTime}
-            onChange={handleScrubberChange}
-          />
           
           <svg className={styles.graphic} width={600} height={600}>
             <defs>
@@ -239,7 +188,6 @@ export default function Graphic() {
               obscuration={data.properties.obscuration}
               radius={100}
               wxh={600}
-              currentTime={currentTime}
             />
           </svg>
         </div>

@@ -2,8 +2,10 @@
 import * as d3 from 'd3'
 import overlap from '../output.json';
 import { useEffect, useState, useRef } from 'react';
+import Timeline from '../components/Timeline';
 
-const RenderCircle = ({ data, obscuration, radius, wxh, currentTime }) => {
+const RenderCircle = ({ data, obscuration, radius, wxh }) => {
+  console.log('sss')
   let lineData = [
     [],
     [],
@@ -22,12 +24,13 @@ const RenderCircle = ({ data, obscuration, radius, wxh, currentTime }) => {
   // console.log(data.properties.local_data)
   // console.log(beginVertexAngle, endVertexAngle)
   const gRef = useRef();
-  let moon;
-  let moonPath;
+  const moon = useRef(null);
+  const moonPath = useRef(null);
+  const [isPaused, setPaused] = useState(false);
 
   useEffect(() => {
     drawCircles();
-  }, [data, obscuration, currentTime]);
+  }, [data, obscuration]);
 
   const drawCircles = () => {
     const g = d3.select(gRef.current);
@@ -60,6 +63,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh, currentTime }) => {
         color = "pink";
         cx = cx*d
         cy = cy*d
+        console.log(cx, cy)
         lineData[1] = [cx, cy]
       }
       if(color !== ""){
@@ -84,15 +88,15 @@ const RenderCircle = ({ data, obscuration, radius, wxh, currentTime }) => {
       .x(d => d[0])
       .y(d => d[1])
       .curve(curve); // Apply the Bezier curve to the line
-
+    
     // Add the Bezier curve path to the
-    moonPath = g.append('path')
+    moonPath.current = g.append('path')
       .datum(lineData) // Bind the data
       .attr('d', line) // Use the line generator
       // .attr('stroke', 'red')
       .attr('fill', 'none');
     
-    moon = g.append('circle')
+    moon.current = g.append('circle')
       // .attr('cx', lineData[0][0])
       // .attr('cy', lineData[0][1])
       .attr('r', radius)
@@ -102,26 +106,94 @@ const RenderCircle = ({ data, obscuration, radius, wxh, currentTime }) => {
     animateCircle();
   };
 
+  // const animateCircle = () => {
+  //   const transition = moon.transition()
+  //     .duration(5000) // Duration of the animation (in milliseconds)
+  //     .attrTween('transform', translateAlongPath)
+  //     .ease(d3.easeLinear) // Apply linear easing
+  //     .on('end', animateCircle); // Restart the animation when it ends
+    
+  //   if (isPaused) {
+  //     transition.pause();
+  //   } else {
+  //     transition.resume();
+  //   }
+  // };
   const animateCircle = () => {
-    moon.transition()
-      .duration(10) 
-      .attrTween('transform', translateAlongPath)
-      .ease(d3.easeLinear)
-      .on('end', animateCircle);
+    if (moon.current) {
+      moon.current.interrupt(); // Interrupt any existing transition
+
+      moon.current.transition()
+        .duration(5000) // Adjust duration based on remaining progress
+        .ease(d3.easeLinear)
+        .attrTween('transform', translateAlongPath)
+        .on('end', animateCircle);
+    }
   };
 
-  const translateAlongPath = () => {
+  const translateAlongPath = (t) => {
     return (t) => {
-      const path = moonPath.node();
+      const path = moonPath.current.node();
       const l = path.getTotalLength();
-      const p = path.getPointAtLength(currentTime * l);
+      const p = path.getPointAtLength(t * l);
+
+      // console.log(t, t.toFixed(2))
+
+      // console.log(t)
+      if(t.toFixed(2) === '0.50'){
+        console.log('match')
+        setPaused(true);
+        // setTimeout(() => { 
+        //   console.log('settimeout')
+        //   console.log(isPaused)
+        //   setPaused(false);
+        // }, 2000)
+        console.log(isPaused)
+      }
+
+      // Translate the circle to the new position
       return `translate(${p.x},${p.y})`;
     };
   };
 
+  // const translateAlongPath = () => {
+  //   return (t) => {
+  //     // Get the current position along the path
+  //     const path = moonPath.node();
+  //     const l = path.getTotalLength();
+  //     const p = path.getPointAtLength(t * l);
+
+  //     if (onProgressChange) {
+  //         onProgressChange(t);
+  //     }
+
+  //     // console.log(t)
+  //     if(t.toFixed(2) === 0.50){
+  //       setPaused(true);
+  //       setTimeout(() => { 
+  //         setPaused(false);
+  //       }, 2000)
+  //     }
+
+  //     // Translate the circle to the new position
+  //     return `translate(${p.x},${p.y})`;
+  //   };
+  // };
+  
+
+  useEffect(() => {
+    if (!isPaused) {
+      animateCircle();
+    }
+  }, [isPaused]);
+
+
   return(
-    <g ref={gRef} transform={`translate(${wxh/2}, ${wxh/2})`}>
-      <circle cx={'0px'} cy={'0px'} r={radius} fill="blue"></circle>
+    <g>
+      <Timeline />
+      <g ref={gRef} transform={`translate(${wxh/2}, ${wxh/2})`}>
+        <circle cx={'0px'} cy={'0px'} r={radius} fill="blue"></circle>
+      </g>
     </g>
   )
 }
