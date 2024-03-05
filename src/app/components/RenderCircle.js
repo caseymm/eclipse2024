@@ -2,7 +2,6 @@
 import * as d3 from 'd3'
 import overlap from '../output.json';
 import { useEffect, useState, useRef } from 'react';
-import Timeline from '../components/Timeline';
 
 const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   console.log('sss')
@@ -27,6 +26,22 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   const gParentRef = useRef();
   const moon = useRef(null);
   const moonPath = useRef(null);
+  const gTimelineRef = useRef(null);
+  const movingElement = useRef(null);
+
+  function parseAndDisplayTime(timeString, first) {
+    const utcDateTime = `2024-04-08T${timeString}Z`;
+    // Parse the UTC time
+    const date = new Date(utcDateTime);
+    const options = { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+    const localTime = date.toLocaleTimeString('en-US', options);
+
+    if(first){
+      return localTime;
+    } else {
+      return localTime.split(' ')[0];
+    }
+  }
 
   useEffect(() => {
     if (moon.current) {
@@ -38,8 +53,85 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
         .interrupt()
         .attr('fill', '#cfedfc');
     }
+    drawTimeline();
     drawCircles();
   }, [data, obscuration, length]);
+
+
+  const drawTimeline = () => {
+    if (gTimelineRef.current) {
+      const times = data.properties.local_data.map(d => d.time);
+      d3.selectAll('.shade').remove();
+      d3.selectAll('line').remove();
+      d3.selectAll('.timeline').remove();
+      d3.selectAll('.texts').remove();
+      const g = d3.select(gTimelineRef.current);
+      // Timeline path (e.g., a simple horizontal line)
+      g.append('line')
+        .attr('x1', 0)
+        .attr('y1', 1)
+        .attr('x2', '100%')
+        .attr('y2', 1)
+        .attr('stroke', 'black');
+
+      const textBlock = g.append('g')
+        .classed('texts', true)
+        .attr('transform', 'translate(0, 20)')
+
+      textBlock.append('text')
+        .text(parseAndDisplayTime(times[0], true))
+        .attr('text-anchor', 'start')
+      
+      textBlock.append('text')
+        .text(parseAndDisplayTime(times[times.length - 1]))
+        .attr('text-anchor', 'end')
+        .attr('x', '100%')
+      
+      if(times.length === 3){
+        g.append('rect')
+        //  can I calc 50% - 2px?
+          .attr('x', '50%')
+          .attr('y', -8)
+          .attr('width', '2px')
+          .attr('height', 16)
+          .attr('fill', 'black')
+          .classed('shade', true);
+        
+        textBlock.append('text')
+          .text(parseAndDisplayTime(times[1]))
+          .attr('text-anchor', 'middle')
+          .attr('x', '50%')
+      } else {
+        g.append('rect')
+          .attr('x', '45.5%')
+          .attr('y', -8)
+          .attr('width', '9%')
+          .attr('height', 16)
+          .attr('opacity', .7)
+          .attr('fill', 'gray')
+          .classed('shade', true);
+        
+        textBlock.append('text')
+          .text(parseAndDisplayTime(times[1]))
+          .attr('text-anchor', 'middle')
+          .attr('x', '45.5%') 
+
+        textBlock.append('text')
+          .text(parseAndDisplayTime(times[3]))
+          .attr('text-anchor', 'middle')
+          .attr('x', '54.5%') 
+      }
+      
+      // Moving element (e.g., a circle)
+      movingElement.current = g.append('circle')
+        .classed('timeline', true)
+        .attr('cx', 0)
+        .attr('cy', 1)
+        .attr('r', 5)
+        .attr('fill', 'black');
+     
+    }
+  }
 
 
   const drawCircles = () => {
@@ -121,6 +213,23 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   
   const animateFirstHalf = () => {
 
+    movingElement.current.transition()
+    .duration(() => {
+      if(length === 5){
+        return 5500;
+      } else {
+        return 5000;
+      }
+    })
+    .ease(d3.easeLinear)
+    .attrTween('cx', () => {
+      return (t) => {
+        return d3.scaleLinear()
+          .domain([0, 1])
+          .range([0, '100%'])(t); // Assuming the range is in pixel values
+      };
+    })
+
     d3.select(gParentRef.current).transition()
       .duration(2500)
       .ease(d3.easeLinear)
@@ -158,21 +267,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
       .ease(d3.easeLinear)
       .attrTween('transform', (d, i, nodes) => translateAlongPath(d, i, nodes, 0.5, 1))
       .attr('fill', "#cfedfc")
-      .on('end', () => {
-        // if (moon.current) {
-        //   d3.select(this).interrupt();
-        // }
-        // if (d3.select(gParentRef.current)) {
-        //   console.log('interrupt transition rect')
-        //   d3.select(gParentRef.current)
-        //     .interrupt()
-        //     .attr('fill', '#cfedfc');
-        // }
-        // it is already updating -- don't need this
-        // let bump = sync + 1;
-        // setSync(bump);
-        animateCircle();
-      });
+      .on('end', animateCircle);
   };
   
   const translateAlongPath = (d, i, nodes, startPercent, endPercent) => {
@@ -192,9 +287,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   return(
     <g>
       <rect ref={gParentRef} width={"100%"} height={600} fill="#cfedfc" className="sky"></rect>
-      <Timeline times={data.properties.local_data.map(d => d.time)} 
-      // sync={sync} 
-      />
+      <g ref={gTimelineRef} transform={`translate(0, 5)`}></g>
       {/* <circle cx="300" cy="300" r="175" fill="url(#grad1)" /> */}
       <g ref={gRef} transform={`translate(${wxh/2}, ${wxh/2})`}>
         <circle cx={'0px'} cy={'0px'} r={radius} fill="#f7c602"></circle>
