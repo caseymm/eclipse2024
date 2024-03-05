@@ -25,7 +25,7 @@ function TimelineAnimation({times}) {
   useEffect(() => {
     // Ensure the ref is current before using it
     if (gRef.current) {
-      d3.selectAll('rect').remove();
+      d3.selectAll('.shade').remove();
       d3.selectAll('line').remove();
       d3.selectAll('.timeline').remove();
       d3.selectAll('.texts').remove();
@@ -58,7 +58,8 @@ function TimelineAnimation({times}) {
           .attr('y', -8)
           .attr('width', '2px')
           .attr('height', 16)
-          .attr('fill', 'black');
+          .attr('fill', 'black')
+          .classed('shade', true);
         
         textBlock.append('text')
           .text(parseAndDisplayTime(times[1]))

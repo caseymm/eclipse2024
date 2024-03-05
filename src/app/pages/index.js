@@ -182,7 +182,7 @@ export default function Graphic() {
                 <stop offset="100%" style={{stopColor: 'rgba(255, 255, 0, 0)', stopOpacity: 1}} />
               </radialGradient>
             </defs>
-            <circle cx="300" cy="300" r="175" fill="url(#grad1)" />
+            
             <RenderCircle
               data={data}
               obscuration={data.properties.obscuration}
