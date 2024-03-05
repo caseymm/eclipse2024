@@ -24,7 +24,7 @@ const Map = ({ center, scrollPos }) => {
         container: 'map-container',
         style: 'mapbox://styles/caseymmiler/clt4ykbgp00cu01qpequ67ei8',
         center: [-99.17, 39.85],
-        zoom: 1.5
+        zoom: 2
       });
 
       // Add GeoJSON layer to the map
@@ -40,9 +40,8 @@ const Map = ({ center, scrollPos }) => {
             'source': 'center-line',
             'layout': {},
             'paint': {
-                'line-color': '#088',
-                'line-width': 3
-                // 'fill-opacity': 0.8
+                'line-color': '#fff',
+                'line-width': 0
             }
         });
 
@@ -51,17 +50,40 @@ const Map = ({ center, scrollPos }) => {
             'data': pointOnLine(0)
         });
 
+        // newMap.addLayer({
+        //   'id': 'point2',
+        //   'source': 'point',
+        //   'type': 'circle',
+        //   'paint': {
+        //       'circle-radius': 60,
+        //       'circle-color': '#ff0080',
+        //       'circle-opacity': 0.2
+        //   }
+        // });
+
+        // newMap.addLayer({
+        //   'id': 'point1',
+        //   'source': 'point',
+        //   'type': 'circle',
+        //   'paint': {
+        //       'circle-radius': 28,
+        //       'circle-color': '#ff0080',
+        //       'circle-opacity': 0.2
+        //   }
+        // });
 
         newMap.addLayer({
             'id': 'point',
             'source': 'point',
             'type': 'circle',
             'paint': {
-                'circle-radius': 10,
-                'circle-color': '#007cbf'
+                'circle-radius': 8,
+                'circle-color': '#000',
+                'circle-stroke-color': '#f7e305',
+                'circle-stroke-width': 1,
+                'circle-opacity': 1
             }
         });
-
 
       });
       // fly to geolocated position
@@ -85,7 +107,12 @@ const Map = ({ center, scrollPos }) => {
           zoom: 12 // You can adjust the zoom level as needed
         });
       } else {
-        // console.log(scrollPos)
+        if(map.getZoom() !== 2){
+          map.flyTo({
+            center,
+            zoom: 2 // You can adjust the zoom level as needed
+          });
+        }
         map.getSource('point').setData(pointOnLine(scrollPos));
       }
     }
@@ -100,7 +127,7 @@ const Map = ({ center, scrollPos }) => {
       // });
       if(scrollPos === 99){
         map.flyTo({
-          center,
+          center: [-99.17, 39.85],
           zoom: 12 // You can adjust the zoom level as needed
         });
       }
@@ -108,7 +135,7 @@ const Map = ({ center, scrollPos }) => {
     
   }, [map, center]);
 
-  return <div id="map-container" style={{ height: '100vh', width: '50%', position: 'fixed' }} />;
+  return <div id="map-container" style={{ height: '100vh', width: '100%', position: 'absolute' }} />;
 };
 
 export default Map;

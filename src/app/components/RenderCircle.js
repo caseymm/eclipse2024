@@ -282,16 +282,14 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
     };
   };
   
-
-
   return(
     <g>
-      <rect ref={gParentRef} width={"100%"} height={600} fill="#cfedfc" className="sky"></rect>
-      <g ref={gTimelineRef} transform={`translate(0, 5)`}></g>
+      <rect ref={gParentRef} width={"100%"} height={900} fill="#cfedfc" className="sky"></rect>
       {/* <circle cx="300" cy="300" r="175" fill="url(#grad1)" /> */}
-      <g ref={gRef} transform={`translate(${wxh/2}, ${wxh/2})`}>
+      <g ref={gRef} transform={`translate(${wxh/2}, ${900/2})`}>
         <circle cx={'0px'} cy={'0px'} r={radius} fill="#f7c602"></circle>
       </g>
+      <g ref={gTimelineRef} transform={`translate(0, 650)`}></g>
     </g>
   )
 }

@@ -177,44 +177,41 @@ export default function Graphic() {
   }
 
   return (
-    <main className={styles.main}>
+    <main>
       <Map currentLocation={data.geometry.coordinates} center={data.geometry.coordinates} scrollPos={scrollPosition} />
       <div className="hed">
         <TitleScroll onScroll={handleScroll} />
-        <div className="graphic">
-          {/* <h1>{data.placeName}</h1> */}
-          <div className="data-body">
-            <Geocoder onDataUpdate={handleDataUpdate} />
-            <div style={{display: 'inline', lineHeight: '1.6'}}>
-              will experience a maximum of {data.properties.obscuration} obscuration at {parseAndDisplayTime(data.properties.maxTime, true)}. The eclipse will last a 
-              total of {data.properties.duration}, starting at {parseAndDisplayTime(data.properties.local_data[0].time, true)} and ending 
-              at {parseAndDisplayTime(data.properties.local_data[data.properties.local_data.length - 1].time, true)}.
-            </div>
-          </div>
+        
+      </div>
+      <div className="bridge"></div>
+      <div className="graphic">
+        <svg className="svg-graphic" width={window.innerWidth} height={900}>
+          <defs>
+            <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+              <stop offset="0%" style={{stopColor: 'rgba(255, 255, 0, 0.5)', stopOpacity: 1}} />
+              <stop offset="100%" style={{stopColor: 'rgba(255, 255, 0, 0)', stopOpacity: 1}} />
+            </radialGradient>
+          </defs>
           
-          <svg className="svg-graphic" width={600} height={600}>
-            <defs>
-              <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" style={{stopColor: 'rgba(255, 255, 0, 0.5)', stopOpacity: 1}} />
-                <stop offset="100%" style={{stopColor: 'rgba(255, 255, 0, 0)', stopOpacity: 1}} />
-              </radialGradient>
-            </defs>
-            
-            <RenderCircle
-              data={data}
-              obscuration={data.properties.obscuration}
-              radius={100}
-              wxh={600}
-              length={data.properties.local_data.length}
-            />
-          </svg>
+          <RenderCircle
+            data={data}
+            obscuration={data.properties.obscuration}
+            radius={100}
+            wxh={window.innerWidth}
+            length={data.properties.local_data.length}
+          />
+        </svg>
+        <div className="data-body">
+          <Geocoder onDataUpdate={handleDataUpdate} />
+          <div style={{display: 'inline', lineHeight: '1.6'}}>
+            will experience a maximum of {data.properties.obscuration} obscuration at {parseAndDisplayTime(data.properties.maxTime, true)}. The eclipse will last a 
+            total of {data.properties.duration}, starting at {parseAndDisplayTime(data.properties.local_data[0].time, true)} and ending 
+            at {parseAndDisplayTime(data.properties.local_data[data.properties.local_data.length - 1].time, true)}.
+          </div>
         </div>
       </div>
       {/* <Cities /> */}
       {/* <USMap currentLocation={data.geometry.coordinates}></USMap> */}
-      <div className={styles.grid}>
-        tktk
-      </div>
     </main>
   )
 }
