@@ -177,3 +177,46 @@ a {
 .texts{
   font-size: 11px;
 }
+
+input[type="text"] {
+  padding: 0px 0px;
+}
+
+input{
+  background-color: rgba(0,0,0,0);
+  border: 0px solid #000;
+  border-bottom-width: 5px;
+  -webkit-appearance: none;
+  border-radius: 0px;
+  font-size: 25px;
+  // color: $purple;
+  // font-family: 'Work Sans', sans-serif;
+  font-weight: 500;
+  width: 300px;
+  display: inline;
+  // margin: 50px auto;
+  text-align: center;
+  @media(max-width: 500px){
+    font-size: 30px;
+    margin: 30px auto;
+    max-width: calc(100% - 30px);
+  }
+  &:focus {outline:none;}
+  // &#submit{
+  //   margin-top: 20px;
+  // }
+}
+
+.data-body{
+  font-size: 25px;
+}
+
+ul.places{
+  position: absolute;
+  background-color: white;
+  list-style-type: none;
+  li{
+    margin: 5px;
+    font-size: 18px;
+  }
+}

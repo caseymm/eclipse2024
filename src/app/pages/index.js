@@ -33,6 +33,7 @@ export default function Graphic() {
       "duration": "2h 28m 23.5s", 
       "duration_of_totality": "3m 44.3s", 
       "event": "Solar Eclipse of 2024 April 08", 
+      "maxTime": "19:18:08.5",
       "local_data": [
         {
           "altitude": "54.3", 
@@ -120,7 +121,7 @@ export default function Graphic() {
       const updatedData = await getData(longitude, latitude);
       const maxTimeInt = Math.round(updatedData.properties.local_data.length/2) - 1;
       const maxTime = updatedData.properties.local_data[maxTimeInt].time;
-      updatedData.maxTime = maxTime;
+      updatedData.properties.maxTime = maxTime;
       // updatedData.placeName = placeName;
       setData(updatedData);
       console.log('Data updated:', updatedData);
@@ -161,6 +162,20 @@ export default function Graphic() {
     );
   };
 
+  function parseAndDisplayTime(timeString, first) {
+    const utcDateTime = `2024-04-08T${timeString}Z`;
+    // Parse the UTC time
+    const date = new Date(utcDateTime);
+    const options = { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+    const localTime = date.toLocaleTimeString('en-US', options);
+
+    if(first){
+      return localTime;
+    } else {
+      return localTime.split(' ')[0];
+    }
+  }
+
   return (
     <main className={styles.main}>
       <Map currentLocation={data.geometry.coordinates} center={data.geometry.coordinates} scrollPos={scrollPosition} />
@@ -168,11 +183,13 @@ export default function Graphic() {
         <TitleScroll onScroll={handleScroll} />
         <div className="graphic">
           {/* <h1>{data.placeName}</h1> */}
-          <div>
+          <div className="data-body">
             <Geocoder onDataUpdate={handleDataUpdate} />
-            will experience a maximum of {data.properties.obscuration} obscuration at {data.maxTime}. The eclipse will last a 
-            total of {data.properties.duration}, starting at {data.properties.local_data[0].time} and ending 
-            at {data.properties.local_data[data.properties.local_data.length - 1].time}.
+            <div style={{display: 'inline', lineHeight: '1.6'}}>
+              will experience a maximum of {data.properties.obscuration} obscuration at {parseAndDisplayTime(data.properties.maxTime, true)}. The eclipse will last a 
+              total of {data.properties.duration}, starting at {parseAndDisplayTime(data.properties.local_data[0].time, true)} and ending 
+              at {parseAndDisplayTime(data.properties.local_data[data.properties.local_data.length - 1].time, true)}.
+            </div>
           </div>
           
           <svg className="svg-graphic" width={600} height={600}>

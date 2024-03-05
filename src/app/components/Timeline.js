@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
 function TimelineAnimation({times}) {
+  console.log('render timeline')
 
   function parseAndDisplayTime(timeString, first) {
     const utcDateTime = `2024-04-08T${timeString}Z`;
@@ -19,16 +20,16 @@ function TimelineAnimation({times}) {
 
   // parseAndDisplayTime(times[2])
 
-  const gRef = useRef(null);
+  const gTimelineRef = useRef(null);
 
   useEffect(() => {
     // Ensure the ref is current before using it
-    if (gRef.current) {
+    if (gTimelineRef.current) {
       d3.selectAll('.shade').remove();
       d3.selectAll('line').remove();
       d3.selectAll('.timeline').remove();
       d3.selectAll('.texts').remove();
-      const g = d3.select(gRef.current);
+      const g = d3.select(gTimelineRef.current);
       // Timeline path (e.g., a simple horizontal line)
       g.append('line')
         .attr('x1', 0)
@@ -119,7 +120,7 @@ function TimelineAnimation({times}) {
   }, [times])
   
   return(
-    <g ref={gRef} transform={`translate(0, 5)`}></g>
+    <g ref={gTimelineRef} transform={`translate(0, 5)`}></g>
   )
 }
 

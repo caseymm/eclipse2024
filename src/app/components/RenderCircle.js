@@ -158,7 +158,21 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
       .ease(d3.easeLinear)
       .attrTween('transform', (d, i, nodes) => translateAlongPath(d, i, nodes, 0.5, 1))
       .attr('fill', "#cfedfc")
-      .on('end', animateCircle);
+      .on('end', () => {
+        // if (moon.current) {
+        //   d3.select(this).interrupt();
+        // }
+        // if (d3.select(gParentRef.current)) {
+        //   console.log('interrupt transition rect')
+        //   d3.select(gParentRef.current)
+        //     .interrupt()
+        //     .attr('fill', '#cfedfc');
+        // }
+        // it is already updating -- don't need this
+        // let bump = sync + 1;
+        // setSync(bump);
+        animateCircle();
+      });
   };
   
   const translateAlongPath = (d, i, nodes, startPercent, endPercent) => {
@@ -178,7 +192,9 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   return(
     <g>
       <rect ref={gParentRef} width={"100%"} height={600} fill="#cfedfc" className="sky"></rect>
-      <Timeline times={data.properties.local_data.map(d => d.time)} />
+      <Timeline times={data.properties.local_data.map(d => d.time)} 
+      // sync={sync} 
+      />
       {/* <circle cx="300" cy="300" r="175" fill="url(#grad1)" /> */}
       <g ref={gRef} transform={`translate(${wxh/2}, ${wxh/2})`}>
         <circle cx={'0px'} cy={'0px'} r={radius} fill="#f7c602"></circle>

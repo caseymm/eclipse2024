@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 
 const Geocoder = ({ onDataUpdate }) => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('Erie, PA');
   const [suggestions, setSuggestions] = useState([]);
 
   const handleInputChange = (event) => {
@@ -40,9 +40,9 @@ const Geocoder = ({ onDataUpdate }) => {
   };
 
   return (
-    <div>
+    <div style={{display: 'inline-block', marginRight: '10px'}}>
       <input type="text" value={query} onChange={handleInputChange} />
-      <ul>
+      <ul className="places">
         {suggestions.map((suggestion) => (
           <li key={suggestion.id} onClick={() => handleResultSelect(suggestion)}>
             {suggestion.place_name}
