@@ -175,7 +175,7 @@ export default function Graphic() {
             at {data.properties.local_data[data.properties.local_data.length - 1].time}.
           </div>
           
-          <svg className={styles.graphic} width={600} height={600}>
+          <svg className="svg-graphic" width={600} height={600}>
             <defs>
               <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
                 <stop offset="0%" style={{stopColor: 'rgba(255, 255, 0, 0.5)', stopOpacity: 1}} />
@@ -188,6 +188,7 @@ export default function Graphic() {
               obscuration={data.properties.obscuration}
               radius={100}
               wxh={600}
+              length={data.properties.local_data.length}
             />
           </svg>
         </div>

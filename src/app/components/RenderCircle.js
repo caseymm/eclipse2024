@@ -4,7 +4,7 @@ import overlap from '../output.json';
 import { useEffect, useState, useRef } from 'react';
 import Timeline from '../components/Timeline';
 
-const RenderCircle = ({ data, obscuration, radius, wxh }) => {
+const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   console.log('sss')
   let lineData = [
     [],
@@ -14,6 +14,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
 
   const begin = data.properties.local_data.filter(item => item.phenomenon === 'Eclipse Begins')[0];
   const end = data.properties.local_data.filter(item => item.phenomenon === 'Eclipse Ends')[0];
+  console.log(begin, end)
 
   const beginVertexAngle = Math.round(parseFloat(begin.vertex_angle));
   const endVertexAngle = Math.round(parseFloat(end.vertex_angle));
@@ -28,8 +29,12 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
   const moonPath = useRef(null);
 
   useEffect(() => {
+    if (moon.current) {
+      moon.current.interrupt();
+    }
     drawCircles();
-  }, [data, obscuration]);
+  }, [data, obscuration, length]);
+
 
   const drawCircles = () => {
     const g = d3.select(gRef.current);
@@ -62,7 +67,6 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
         color = "pink";
         cx = cx*d
         cy = cy*d
-        console.log(cx, cy)
         lineData[1] = [cx, cy]
       }
       if(color !== ""){
@@ -96,8 +100,6 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
       .attr('fill', 'none');
     
     moon.current = g.append('circle')
-      // .attr('cx', lineData[0][0])
-      // .attr('cy', lineData[0][1])
       .attr('r', radius)
       .attr('fill', 'pink')
       .classed('moon', true);
@@ -112,20 +114,24 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
   };
   
   const animateFirstHalf = () => {
-    moon.current.interrupt(); // Interrupt any existing transition
+    console.log(length)
+    // moon.current.interrupt(); // Interrupt any existing transition
   
     moon.current.transition()
       .duration(2500) // Half the duration for the first half
       .ease(d3.easeLinear)
-      // .attrTween('transform', translateAlongPath(0, 0.5))
       .attrTween('transform', (d, i, nodes) => translateAlongPath(d, i, nodes, 0, 0.5)) // Pass additional parameters
       .on('end', () => {
+        console.log(length)
         // Optionally, set state or ref here to indicate the first half is done
         // You can then use a button or event to trigger animateSecondHalf
-        setTimeout(() => {
+        if(length === 5){
+          setTimeout(() => {
+            animateSecondHalf();
+          }, 500)
+        } else {
           animateSecondHalf();
-        }, 500)
-        
+        }
       });
   };
   
@@ -154,7 +160,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh }) => {
 
   return(
     <g>
-      <Timeline />
+      <Timeline times={data.properties.local_data.map(d => d.time)} />
       <g ref={gRef} transform={`translate(${wxh/2}, ${wxh/2})`}>
         <circle cx={'0px'} cy={'0px'} r={radius} fill="blue"></circle>
       </g>
