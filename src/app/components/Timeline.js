@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
 function TimelineAnimation({times}) {
-  console.log(times)
 
   function parseAndDisplayTime(timeString, first) {
     const utcDateTime = `2024-04-08T${timeString}Z`;
@@ -72,7 +71,8 @@ function TimelineAnimation({times}) {
           .attr('width', '9%')
           .attr('height', 16)
           .attr('opacity', .7)
-          .attr('fill', 'gray');
+          .attr('fill', 'gray')
+          .classed('shade', true);
         
         textBlock.append('text')
           .text(parseAndDisplayTime(times[1]))

@@ -32,6 +32,12 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
     if (moon.current) {
       moon.current.interrupt();
     }
+    if (d3.select(gParentRef.current)) {
+      console.log('interrupt transition rect')
+      d3.select(gParentRef.current)
+        .interrupt()
+        .attr('fill', '#cfedfc');
+    }
     drawCircles();
   }, [data, obscuration, length]);
 
@@ -114,46 +120,23 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   };
   
   const animateFirstHalf = () => {
-    // moon.current.interrupt(); // Interrupt any existing transition
-  
-    moon.current.transition()
-      .duration(2500) // Half the duration for the first half
+
+    d3.select(gParentRef.current).transition()
+      .duration(2500)
       .ease(d3.easeLinear)
-      .attrTween('transform', (d, i, nodes) => translateAlongPath(d, i, nodes, 0, 0.5)) // Pass additional parameters
       .attr('fill', () => {
-        if(length === 5){
-          return '#2e3778';
-        } else {
-          return "#cfedfc";
-        }
+        return length === 5 ? '#2e3778' : "#cfedfc";
       })
-      .on('start', function() {
-        if(length === 5){
-          d3.select(gParentRef.current)
-            .transition()
-            .duration(2500)
-            .attr("fill", "#2e3778");
-          // setTimeout(() => {
-          //   d3.select(gParentRef.current)
-          //   .transition()
-          //   .duration(650)
-          //   .attr("fill", "#2e3778");
-          //   // d3.select(this)
-          //   // .transition()
-          //   // .duration(650)
-          //   // .attr("fill", "#2e3778");
-          // }, 1850)
-        }
+    
+    moon.current.transition()
+      .duration(2500)
+      .ease(d3.easeLinear) // Easing for the transform
+      .attrTween('transform', (d, i, nodes) => translateAlongPath(d, i, nodes, 0, 0.5))
+      .attr('fill', () => {
+        return length === 5 ? '#2e3778' : "#cfedfc";
       })
       .on('end', () => {
-        // Optionally, set state or ref here to indicate the first half is done
-        // You can then use a button or event to trigger animateSecondHalf
         if(length === 5){
-          d3.select(gParentRef.current)
-            // .classed('bg', true)
-            .transition()
-            .duration(2500)
-            .attr("fill", "#cfedfc"); // replace with the color you want
           setTimeout(() => {
             animateSecondHalf();
           }, 500)
@@ -164,10 +147,15 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   };
   
   const animateSecondHalf = () => {
+
+    d3.select(gParentRef.current).transition()
+      .duration(2500)
+      .ease(d3.easeLinear)
+      .attr("fill", "#cfedfc")
+
     moon.current.transition()
       .duration(2500) // Remaining half duration
       .ease(d3.easeLinear)
-      // .attrTween('transform', translateAlongPath(0.5, 1))
       .attrTween('transform', (d, i, nodes) => translateAlongPath(d, i, nodes, 0.5, 1))
       .attr('fill', "#cfedfc")
       .on('end', animateCircle);
@@ -189,7 +177,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
 
   return(
     <g>
-      <rect ref={gParentRef} width={"100%"} height={600} fill="#cfedfc"></rect>
+      <rect ref={gParentRef} width={"100%"} height={600} fill="#cfedfc" className="sky"></rect>
       <Timeline times={data.properties.local_data.map(d => d.time)} />
       {/* <circle cx="300" cy="300" r="175" fill="url(#grad1)" /> */}
       <g ref={gRef} transform={`translate(${wxh/2}, ${wxh/2})`}>
