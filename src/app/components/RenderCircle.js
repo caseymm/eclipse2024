@@ -28,6 +28,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   const moonPath = useRef(null);
   const gTimelineRef = useRef(null);
   const movingElement = useRef(null);
+  const filterRef = useRef();
 
   function parseAndDisplayTime(timeString, first) {
     const utcDateTime = `2024-04-08T${timeString}Z`;
@@ -213,6 +214,32 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   
   const animateFirstHalf = () => {
 
+    // d3.select(filterRef.current).transition()
+    //   .duration(2500)
+    //   .ease(d3.easeLinear)
+    //   .attr("stdDeviation", () => {
+    //     if(length === 5){
+    //       return '20';
+    //     } else {
+    //       return '5';
+    //     }
+    //   })
+    
+    if(length === 5){
+      setTimeout(() => {
+        d3.select(filterRef.current).transition()
+          .duration(50)
+          .ease(d3.easeLinear)
+          .attr("stdDeviation", '30')
+      }, 2500)
+      setTimeout(() => {
+        d3.select(filterRef.current).transition()
+          .duration(50)
+          .ease(d3.easeLinear)
+          .attr("stdDeviation", '0')
+      }, 2950)
+    }
+
     movingElement.current.transition()
     .duration(() => {
       if(length === 5){
@@ -257,6 +284,11 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   
   const animateSecondHalf = () => {
 
+    d3.select(filterRef.current).transition()
+      .duration(2500)
+      .ease(d3.easeLinear)
+      .attr("stdDeviation", '0')
+
     d3.select(gParentRef.current).transition()
       .duration(2500)
       .ease(d3.easeLinear)
@@ -284,10 +316,26 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   
   return(
     <g>
+      <defs>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur ref={filterRef} stdDeviation="0" result="coloredBlur"/>
+          <feComponentTransfer>
+              <feFuncA type="linear" slope="1.5" />
+              <feFuncR type="linear" slope="1.5" />
+              <feFuncG type="linear" slope="1.5" />
+              <feFuncB type="linear" slope="1.5" />
+          </feComponentTransfer>
+          <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
       <rect ref={gParentRef} width={"100%"} height={900} fill="#cfedfc" className="sky"></rect>
       {/* <circle cx="300" cy="300" r="175" fill="url(#grad1)" /> */}
       <g ref={gRef} transform={`translate(${wxh/2}, ${900/2})`}>
-        <circle cx={'0px'} cy={'0px'} r={radius} fill="#f7c602"></circle>
+        <circle cx={'0px'} cy={'0px'} r={radius} fill="#fcd656" filter="url(#glow)"></circle>
       </g>
       <g ref={gTimelineRef} transform={`translate(0, 650)`}></g>
     </g>

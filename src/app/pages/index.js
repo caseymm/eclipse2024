@@ -186,13 +186,6 @@ export default function Graphic() {
       <div className="bridge"></div>
       <div className="graphic">
         <svg className="svg-graphic" width={window.innerWidth} height={900}>
-          <defs>
-            <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-              <stop offset="0%" style={{stopColor: 'rgba(255, 255, 0, 0.5)', stopOpacity: 1}} />
-              <stop offset="100%" style={{stopColor: 'rgba(255, 255, 0, 0)', stopOpacity: 1}} />
-            </radialGradient>
-          </defs>
-          
           <RenderCircle
             data={data}
             obscuration={data.properties.obscuration}
