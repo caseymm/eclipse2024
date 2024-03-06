@@ -69,32 +69,33 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
       const g = d3.select(gTimelineRef.current);
       // Timeline path (e.g., a simple horizontal line)
       g.append('line')
-        .attr('x1', 0)
+        .attr('x1', '5%')
         .attr('y1', 1)
-        .attr('x2', '100%')
+        .attr('x2', '95%')
         .attr('y2', 1)
         .attr('stroke', 'black');
 
       const textBlock = g.append('g')
         .classed('texts', true)
-        .attr('transform', 'translate(0, 20)')
+        .attr('transform', 'translate(0, 25)')
 
       textBlock.append('text')
         .text(parseAndDisplayTime(times[0], true))
         .attr('text-anchor', 'start')
+        .attr('x', '5%')
       
       textBlock.append('text')
         .text(parseAndDisplayTime(times[times.length - 1]))
         .attr('text-anchor', 'end')
-        .attr('x', '100%')
+        .attr('x', '95%')
       
       if(times.length === 3){
         g.append('rect')
         //  can I calc 50% - 2px?
           .attr('x', '50%')
-          .attr('y', -8)
+          .attr('y', -7)
           .attr('width', '2px')
-          .attr('height', 16)
+          .attr('height', 15)
           .attr('fill', 'black')
           .classed('shade', true);
         
@@ -105,9 +106,9 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
       } else {
         g.append('rect')
           .attr('x', '45.5%')
-          .attr('y', -8)
+          .attr('y', -7)
           .attr('width', '9%')
-          .attr('height', 16)
+          .attr('height', 15)
           .attr('opacity', .7)
           .attr('fill', 'gray')
           .classed('shade', true);
@@ -213,17 +214,6 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   };
   
   const animateFirstHalf = () => {
-
-    // d3.select(filterRef.current).transition()
-    //   .duration(2500)
-    //   .ease(d3.easeLinear)
-    //   .attr("stdDeviation", () => {
-    //     if(length === 5){
-    //       return '20';
-    //     } else {
-    //       return '5';
-    //     }
-    //   })
     
     if(length === 5){
       setTimeout(() => {
@@ -332,12 +322,12 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
           </feMerge>
         </filter>
       </defs>
-      <rect ref={gParentRef} width={"100%"} height={900} fill="#cfedfc" className="sky"></rect>
+      <rect ref={gParentRef} width={"100%"} height={1200} fill="#cfedfc" className="sky"></rect>
       {/* <circle cx="300" cy="300" r="175" fill="url(#grad1)" /> */}
-      <g ref={gRef} transform={`translate(${wxh/2}, ${900/2})`}>
+      <g ref={gRef} transform={`translate(${wxh/2}, ${900/2+150})`}>
         <circle cx={'0px'} cy={'0px'} r={radius} fill="#fcd656" filter="url(#glow)"></circle>
       </g>
-      <g ref={gTimelineRef} transform={`translate(0, 650)`}></g>
+      <g ref={gTimelineRef} transform={`translate(0, 400)`}></g>
     </g>
   )
 }

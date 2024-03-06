@@ -113,8 +113,18 @@ export default function Graphic() {
         <TitleScroll onScroll={handleScroll} />
         
       </div>
-      <div className="bridge"></div>
+      <div className="bridge">
+        <p>Totality times range from xx to yy.</p>
+      </div>
       <div className="graphic">
+        <div className="data-body">
+          <Geocoder onDataUpdate={handleDataUpdate} />
+          <div style={{display: 'inline', lineHeight: '1.6'}}>
+            will experience a maximum of {data.properties.obscuration} obscuration at {parseAndDisplayTime(data.properties.maxTime, true)}. The eclipse will last a 
+            total of {data.properties.duration}, starting at {parseAndDisplayTime(data.properties.local_data[0].time, true)} and ending 
+            at {parseAndDisplayTime(data.properties.local_data[data.properties.local_data.length - 1].time, true)}.
+          </div>
+        </div>
         <svg className="svg-graphic" width={window.innerWidth} height={900}>
           <RenderCircle
             data={data}
@@ -124,21 +134,10 @@ export default function Graphic() {
             length={data.properties.local_data.length}
           />
         </svg>
-        <div className="data-body">
-          <Geocoder onDataUpdate={handleDataUpdate} />
-          <div style={{display: 'inline', lineHeight: '1.6'}}>
-            will experience a maximum of {data.properties.obscuration} obscuration at {parseAndDisplayTime(data.properties.maxTime, true)}. The eclipse will last a 
-            total of {data.properties.duration}, starting at {parseAndDisplayTime(data.properties.local_data[0].time, true)} and ending 
-            at {parseAndDisplayTime(data.properties.local_data[data.properties.local_data.length - 1].time, true)}.
-          </div>
-          {data.properties.obscuration === '100.0%' &&
-            <p>blah</p>
-          }
-          {data.properties.obscuration !== '100.0%' &&
-            <EclipseClosestPoint center={data.geometry.coordinates} />
-          }
-        </div>
       </div>
+      {data.properties.obscuration !== '100.0%' &&
+        <EclipseClosestPoint center={data.geometry.coordinates} />
+      }
       {/* <Cities /> */}
       {/* <USMap currentLocation={data.geometry.coordinates}></USMap> */}
     </main>

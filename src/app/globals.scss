@@ -112,6 +112,8 @@ main{
   background: linear-gradient(180deg, rgba(4,18,41,1) 0%, rgba(207,237,252,0) 100%);
   position: relative;
   z-index: 1;
+  text-align: center;
+  color: #fff;
 }
 
 .hed{
@@ -154,10 +156,13 @@ main{
 }
 
 .graphic{
-  height: 100vh;
+  // height: 100vh;
   // padding-top: 100px;
   margin-top: -250px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   .scrubber{
     width: calc(100% - 100px);
     display: inline;
@@ -223,7 +228,12 @@ input{
 }
 
 .data-body{
-  font-size: 25px;
+  font-size: 20px;
+  position: absolute;
+  margin: 50px auto;
+  z-index: 1;
+  max-width: 600px;
+  width: 95%;
 }
 
 ul.places{
@@ -234,4 +244,9 @@ ul.places{
     margin: 5px;
     font-size: 18px;
   }
+}
+
+.closest-point{
+  margin-top: -65px;
+  position: relative;
 }

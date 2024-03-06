@@ -34,7 +34,6 @@ const TitleScroll = ({ onScroll }) => {
         <div className="title-slide">
           <h1>On April 8, 2024 a total solar eclipse will make it's way across North America.</h1>
         </div>
-        <p style={{'position': 'fixed'}}>Scroll position: {scrollPosition}</p>
         <div>1</div>
         <div>2</div>
         <div>3</div>
