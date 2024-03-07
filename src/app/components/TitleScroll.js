@@ -32,7 +32,7 @@ const TitleScroll = ({ onScroll }) => {
     <div className="title">
       <div ref={scrollableDivRef} className="container">
         <div className="title-slide">
-          <h1>On April 8, 2024 a total solar eclipse will make it's way across North America.</h1>
+          <h1>On April 8, 2024 a total solar eclipse will make it’s way across North America.</h1>
         </div>
         <div>1</div>
         <div>2</div>

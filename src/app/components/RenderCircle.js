@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 import overlap from '../output.json';
 import { useEffect, useState, useRef } from 'react';
 
-const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
+const RenderCircle = ({ data, obscuration, radius, length }) => {
   console.log('sss')
   let lineData = [
     [],
@@ -29,6 +29,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   const gTimelineRef = useRef(null);
   const movingElement = useRef(null);
   const filterRef = useRef();
+  const [wxh, setWxh] = useState(800);
 
   function parseAndDisplayTime(timeString, first) {
     const utcDateTime = `2024-04-08T${timeString}Z`;
@@ -45,6 +46,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
   }
 
   useEffect(() => {
+    setWxh(window.innerWidth);
     if (moon.current) {
       moon.current.interrupt();
     }
