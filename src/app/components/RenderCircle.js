@@ -127,7 +127,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
       // Moving element (e.g., a circle)
       movingElement.current = g.append('circle')
         .classed('timeline', true)
-        .attr('cx', 0)
+        .attr('cx', '5%')
         .attr('cy', 1)
         .attr('r', 5)
         .attr('fill', 'black');
@@ -243,7 +243,7 @@ const RenderCircle = ({ data, obscuration, radius, wxh, length }) => {
       return (t) => {
         return d3.scaleLinear()
           .domain([0, 1])
-          .range([0, '100%'])(t); // Assuming the range is in pixel values
+          .range(['5%', '95%'])(t); // Assuming the range is in pixel values
       };
     })
 

@@ -152,12 +152,6 @@ const Map = ({ scrollPos }) => {
       const coords = centerPoint.coordinates;
       map.setCenter(coords);
 
-      // if(map.getZoom() !== 2){
-      //   map.flyTo({
-      //     centerPoint,
-      //     zoom: 2 // You can adjust the zoom level as needed
-      //   });
-      // }
       map.getSource('point').setData(centerPoint);
     }
   }, [map, scrollPos])

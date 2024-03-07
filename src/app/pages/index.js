@@ -6,10 +6,10 @@ import { useState, useEffect, useRef } from 'react';
 import cities from '../data/cities.json';
 import RenderCircle from '../components/RenderCircle';
 import Geocoder from '../components/Geocoder';
-import Map from '../components/Map';
+import Map from '../components/Globe';
 // import USMap from '../components/usMap';
 import TitleScroll from '../components/TitleScroll'; 
-import EclipseClosestPoint from '../components/EclipseClosestPoint'; 
+import EclipseClosestPoint from '../components/EclipseClosestPoint';
 import { getData } from './utils/serverComponent';
 import initialData from '../data/init.json';
 
@@ -135,9 +135,7 @@ export default function Graphic() {
           />
         </svg>
       </div>
-      {data.properties.obscuration !== '100.0%' &&
-        <EclipseClosestPoint center={data.geometry.coordinates} />
-      }
+      <EclipseClosestPoint userLocation={data.geometry.coordinates} isTotality={data.properties.obscuration === "100.0%" ? true : false } />
       {/* <Cities /> */}
       {/* <USMap currentLocation={data.geometry.coordinates}></USMap> */}
     </main>
