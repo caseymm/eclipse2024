@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 
 const Geocoder = React.memo(({ onDataUpdate, initCity }) => {
-  console.log('geoooo')
   const [query, setQuery] = useState(initCity);
   const [suggestions, setSuggestions] = useState([]);
 

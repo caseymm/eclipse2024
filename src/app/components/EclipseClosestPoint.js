@@ -6,6 +6,7 @@ import totality from '../data/totality-better.json';
 import totalityLocations from '../data/totality-locations.json';
 
 const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
+  const [mapLoaded, setMapLoaded] = useState(false);
   const [closestPoint, setClosestPoint] = useState(null);
   const [distance, setDistance] = useState(null);
   const [map, setMap] = useState(null);
@@ -83,7 +84,7 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
 
         newMap.addSource('end', {
           'type': 'geojson',
-          'data': closestPoint
+          'data': userLocation
         });
     
         newMap.addLayer({
@@ -98,7 +99,10 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
                 'circle-opacity': 1
             }
         });
+      });
 
+      newMap.on('idle', () => {
+        setMapLoaded(true);
       });
       // fly to geolocated position
       setMap(newMap);
@@ -114,6 +118,7 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
   }, [map])
 
   useEffect(() => {
+    console.log('ue userloc', userLocation)
     const coords = turf.point(userLocation);
 
     // Assuming eclipsePathGeoJSON is the GeoJSON data
@@ -134,47 +139,54 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
 
     setClosestPoint(nearestPoint);
     setDistance(minDistance);
-
-    let start = {
-      "type": "Point",
-      "coordinates": userLocation
-    }
-
-    let end = {
-      "type": "Point",
-      "coordinates": nearestPoint.geometry.coordinates
-    }
-
-    let line = {
-      'type': 'Feature',
-      'properties': {},
-      'geometry': {
-          'type': 'LineString',
-          'coordinates': [userLocation, nearestPoint.geometry.coordinates]
-      }
-    }
-
-    if(map){
-      map.fitBounds([
-        [-125.94019177512125, 25.297250591566907], // Southwest coordinates 25.297250591566907, -125.94019177512125
-        [-66.47653052524456, 50.07409975048268]  // Northeast coordinates 50.07409975048268, -66.47653052524456
-      ]);
-      const source = map.getSource('start');
-      if(source){
-        source.setData(start);
-      }
-      const source2 = map.getSource('end');
-      if(source2){
-        source2.setData(end);
-      }
-      const source3 = map.getSource('path');
-      if(source3){
-        source3.setData(line);
-      }
-    }
-
   
-  }, [userLocation, map]);
+  }, [map, userLocation]);
+
+  useEffect(() => {
+    if(closestPoint){
+      let start = {
+        "type": "Point",
+        "coordinates": userLocation
+      }
+  
+      let end = {
+        "type": "Point",
+        "coordinates": closestPoint.geometry.coordinates
+      }
+  
+      let line = {
+        'type': 'Feature',
+        'properties': {},
+        'geometry': {
+            'type': 'LineString',
+            'coordinates': [userLocation, closestPoint.geometry.coordinates]
+        }
+      }
+  
+      if(map){
+        map.fitBounds([
+          [-125.94019177512125, 25.297250591566907], // Southwest coordinates 25.297250591566907, -125.94019177512125
+          [-66.47653052524456, 50.07409975048268]  // Northeast coordinates 50.07409975048268, -66.47653052524456
+        ]);
+        const source = map.getSource('start');
+        console.log('s1', source)
+        if(source){
+          source.setData(start);
+        }
+        const source2 = map.getSource('end');
+        console.log('s2222', source2)
+        if(source2){
+          source2.setData(end);
+        }
+        const source3 = map.getSource('path');
+        console.log('s3333', source3)
+        if(source3){
+          source3.setData(line);
+        }
+      }
+    }
+    
+  }, [mapLoaded, closestPoint]);
 
   return (
     <div className="closest-point">
