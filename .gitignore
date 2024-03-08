@@ -13,6 +13,9 @@
 /.next/
 /out/
 
+# large data
+/computation/raw
+
 # production
 /build
 

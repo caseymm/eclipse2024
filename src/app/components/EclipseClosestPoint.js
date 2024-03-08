@@ -25,12 +25,6 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
 
       // Add GeoJSON layer to the map
       newMap.on('load', function () {
-
-        newMap.fitBounds([
-          [-125.94019177512125, 25.297250591566907], // Southwest coordinates 25.297250591566907, -125.94019177512125
-          [-66.47653052524456, 50.07409975048268]  // Northeast coordinates 50.07409975048268, -66.47653052524456
-        ]);
-
         newMap.scrollZoom.disable()
 
         let tmp = {
@@ -59,7 +53,7 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
               'line-cap': 'round'
           },
           'paint': {
-              'line-color': '#e60000',
+              'line-color': '#0077ff',
               'line-width': 3
           }
         });
@@ -75,8 +69,8 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
             'type': 'circle',
             'paint': {
                 'circle-radius': 5,
-                'circle-color': '#ff0080',
-                'circle-stroke-color': '#fff',
+                'circle-color': '#0077ff',
+                'circle-stroke-color': '#d9d9d9',
                 'circle-stroke-width': 1,
                 'circle-opacity': 1
             }
@@ -100,6 +94,10 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
             }
         });
       });
+
+      if(window.innerWidth > 500){
+        newMap.addControl(new mapboxgl.NavigationControl());
+      }
 
       newMap.on('idle', () => {
         setMapLoaded(true);
@@ -138,9 +136,9 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
     });
 
     setClosestPoint(nearestPoint);
-    setDistance(minDistance);
+    setDistance(Math.round(minDistance));
   
-  }, [map, userLocation]);
+  }, [userLocation]);
 
   useEffect(() => {
     if(closestPoint){
@@ -169,17 +167,14 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
           [-66.47653052524456, 50.07409975048268]  // Northeast coordinates 50.07409975048268, -66.47653052524456
         ]);
         const source = map.getSource('start');
-        console.log('s1', source)
         if(source){
           source.setData(start);
         }
         const source2 = map.getSource('end');
-        console.log('s2222', source2)
         if(source2){
           source2.setData(end);
         }
         const source3 = map.getSource('path');
-        console.log('s3333', source3)
         if(source3){
           source3.setData(line);
         }
@@ -191,16 +186,13 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
   return (
     <div className="closest-point">
       {closestPoint && !isTotality && (
-        <div>
-          <h2>nearest place: {totalityLocations[closestPoint.geometry.coordinates.join(',')]}</h2>
-          <p>Distance: {distance} miles</p>
-          <p>Coordinates: {closestPoint.geometry.coordinates.join(', ')}</p>
-        </div>
+        <p>The closest city on the path of totality to your current location is {distance} miles away in {totalityLocations[closestPoint.geometry.coordinates.join(',')].replace(', United States', '')}.</p>
       )}
       {isTotality &&
       <p>You are in the path of totality!</p>
       }
-      <div id="map-bottom" style={{ height: '900px', width: '100%', position: 'relative' }} />
+      <div className="map-break"></div>
+      <div id="map-bottom" style={{ width: '100%', position: 'relative' }} />
     </div>
   );
 });

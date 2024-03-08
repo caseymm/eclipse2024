@@ -39,7 +39,7 @@ const Geocoder = React.memo(({ onDataUpdate, initCity }) => {
   };
 
   return (
-    <div style={{display: 'inline-block', marginRight: '10px'}}>
+    <div style={{width: '100%'}}>
       <input type="text" value={query} onChange={handleInputChange} />
       <ul className="places">
         {suggestions.map((suggestion) => (

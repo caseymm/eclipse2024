@@ -114,6 +114,7 @@ main{
   z-index: 1;
   text-align: center;
   color: #fff;
+  padding-top: 100px;
 }
 
 .hed{
@@ -136,7 +137,7 @@ main{
       div{
         height: 800px;
         border-color: blue;
-        border-width: 5px;
+        border-width: 0px;
         border-style: solid;
         &:nth-of-type(2){
           border-color: red;
@@ -156,8 +157,6 @@ main{
 }
 
 .graphic{
-  // height: 100vh;
-  // padding-top: 100px;
   margin-top: -250px;
   position: relative;
   display: flex;
@@ -205,21 +204,18 @@ input[type="text"] {
 input{
   background-color: rgba(0,0,0,0);
   border: 0px solid #000;
-  border-bottom-width: 5px;
+  border-bottom-width: 2px;
   -webkit-appearance: none;
   border-radius: 0px;
-  font-size: 25px;
-  // color: $purple;
-  // font-family: 'Work Sans', sans-serif;
+  font-size: 20px;
   font-weight: 500;
-  width: 300px;
+  width: 100%;
   display: inline;
   // margin: 50px auto;
+  margin-bottom: 15px;
   text-align: center;
   @media(max-width: 500px){
-    font-size: 30px;
-    margin: 30px auto;
-    max-width: calc(100% - 30px);
+    font-size: 20px;
   }
   &:focus {outline:none;}
   // &#submit{
@@ -228,12 +224,15 @@ input{
 }
 
 .data-body{
-  font-size: 20px;
+  font-size: 16px;
   position: absolute;
-  margin: 50px auto;
+  margin: 189px auto;
   z-index: 1;
   max-width: 600px;
-  width: 95%;
+  width: 100%;
+  @media(max-width: 500px){
+    width: 90%;
+  }
 }
 
 ul.places{
@@ -247,6 +246,31 @@ ul.places{
 }
 
 .closest-point{
-  margin-top: -65px;
   position: relative;
+  width: 100%;
+  background-color: #cfedfc;
+  text-align: center;
+  p{
+    margin-bottom: 30px;
+    padding: 0 10px;
+  }
+}
+
+.map-break{
+  height: 150px;
+  width: 100%;
+  margin-bottom: -150px;
+  background: rgb(255,255,255);
+  background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(207,237,252,1) 100%);
+  position: relative;
+  z-index: 1;
+}
+
+#map-bottom{
+  height: 800px;
+  width: 100%;
+  margin: auto;
+  @media(max-width: 600px){
+    height: 400px;
+  }
 }

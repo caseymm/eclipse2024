@@ -84,13 +84,13 @@ export default function Graphic() {
           <div className="graphic">
             <div className="data-body">
               <Geocoder onDataUpdate={handleDataUpdate} initCity={city} />
-              <div style={{display: 'inline', lineHeight: '1.6'}}>
+              <div style={{display: 'inline', lineHeight: '1.4'}}>
                 will experience a maximum of {data.properties.obscuration} obscuration at {parseAndDisplayTime(data.properties.maxTime, true)}. The eclipse will last a 
                 total of {data.properties.duration}, starting at {parseAndDisplayTime(data.properties.local_data[0].time, true)} and ending 
                 at {parseAndDisplayTime(data.properties.local_data[data.properties.local_data.length - 1].time, true)}.
               </div>
             </div>
-            <svg className="svg-graphic" width={"100%"} height={900}>
+            <svg className="svg-graphic" width={"100%"} height={800}>
               <RenderCircle
                 data={data}
                 obscuration={data.properties.obscuration}
