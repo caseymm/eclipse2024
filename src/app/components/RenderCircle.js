@@ -1,10 +1,9 @@
 "use client"
 import * as d3 from 'd3'
 import overlap from '../output.json';
-import { useEffect, useState, useRef } from 'react';
+import React,  { useEffect, useState, useRef } from 'react';
 
-const RenderCircle = ({ data, obscuration, radius, length }) => {
-  console.log('sss')
+const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
   let lineData = [
     [],
     [],
@@ -332,6 +331,6 @@ const RenderCircle = ({ data, obscuration, radius, length }) => {
       <g ref={gTimelineRef} transform={`translate(0, 400)`}></g>
     </g>
   )
-}
+});
 
 export default RenderCircle;

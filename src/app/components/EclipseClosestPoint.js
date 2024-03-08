@@ -5,7 +5,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import totality from '../data/totality-better.json';
 import totalityLocations from '../data/totality-locations.json';
 
-const EclipseClosestPoint = ({ userLocation, isTotality }) => {
+const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
   const [closestPoint, setClosestPoint] = useState(null);
   const [distance, setDistance] = useState(null);
   const [map, setMap] = useState(null);
@@ -83,7 +83,7 @@ const EclipseClosestPoint = ({ userLocation, isTotality }) => {
 
         newMap.addSource('end', {
           'type': 'geojson',
-          'data': tmp
+          'data': closestPoint
         });
     
         newMap.addLayer({
@@ -169,7 +169,6 @@ const EclipseClosestPoint = ({ userLocation, isTotality }) => {
       }
       const source3 = map.getSource('path');
       if(source3){
-        console.log(line)
         source3.setData(line);
       }
     }
@@ -192,6 +191,6 @@ const EclipseClosestPoint = ({ userLocation, isTotality }) => {
       <div id="map-bottom" style={{ height: '900px', width: '100%', position: 'relative' }} />
     </div>
   );
-};
+});
 
 export default EclipseClosestPoint;

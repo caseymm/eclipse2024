@@ -1,8 +1,9 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 
-const Geocoder = ({ onDataUpdate }) => {
-  const [query, setQuery] = useState('Erie, PA');
+const Geocoder = React.memo(({ onDataUpdate, initCity }) => {
+  console.log('geoooo')
+  const [query, setQuery] = useState(initCity);
   const [suggestions, setSuggestions] = useState([]);
 
   const handleInputChange = (event) => {
@@ -29,7 +30,6 @@ const Geocoder = ({ onDataUpdate }) => {
   };
 
   const handleResultSelect = (result) => {
-    console.log(result)
     setQuery(result.place_name.replace(', United States', '')); // Update the input with the selected suggestion
     const longitude = result.center[0];
     const latitude = result.center[1];
@@ -51,6 +51,6 @@ const Geocoder = ({ onDataUpdate }) => {
       </ul>
     </div>
   );
-};
+});
 
 export default Geocoder;
