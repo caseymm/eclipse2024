@@ -193,4 +193,6 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
   );
 });
 
+EclipseClosestPoint.displayName = 'EclipseClosestPoint';
+
 export default EclipseClosestPoint;

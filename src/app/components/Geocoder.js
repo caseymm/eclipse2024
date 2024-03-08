@@ -53,4 +53,6 @@ const Geocoder = React.memo(({ onDataUpdate, initCity }) => {
   );
 });
 
+Geocoder.displayName = 'Geocoder';
+
 export default Geocoder;

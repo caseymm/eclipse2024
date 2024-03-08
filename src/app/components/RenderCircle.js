@@ -333,4 +333,6 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
   )
 });
 
+RenderCircle.displayName = 'RenderCircle';
+
 export default RenderCircle;

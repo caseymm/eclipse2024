@@ -5,7 +5,6 @@ import { useState, useEffect, useRef } from 'react';
 import RenderCircle from '../components/RenderCircle';
 import Geocoder from '../components/Geocoder';
 import Map from '../components/Globe';
-// import USMap from '../components/usMap';
 import TitleScroll from '../components/TitleScroll'; 
 import EclipseClosestPoint from '../components/EclipseClosestPoint';
 import { getData, getCurrentCity } from './utils/serverComponent';
