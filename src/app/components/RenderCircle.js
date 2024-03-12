@@ -28,6 +28,7 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
   const gTimelineRef = useRef(null);
   const movingElement = useRef(null);
   const filterRef = useRef();
+  const skyRef = useRef();
   const [wxh, setWxh] = useState(800);
 
   function parseAndDisplayTime(timeString, first) {
@@ -271,6 +272,13 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
           animateSecondHalf();
         }
       });
+    
+    d3.select(skyRef.current).transition()
+      .duration(2500)
+      .ease(d3.easeLinear)
+      .style('stop-color', () => {
+        return length === 5 ? '#2e3778' : 'rgba(207,237,252,1)'
+      })
   };
   
   const animateSecondHalf = () => {
@@ -291,6 +299,11 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
       .attrTween('transform', (d, i, nodes) => translateAlongPath(d, i, nodes, 0.5, 1))
       .attr('fill', "#cfedfc")
       .on('end', animateCircle);
+
+    d3.select(skyRef.current).transition()
+      .duration(2500)
+      .ease(d3.easeLinear)
+      .style("stop-color", 'rgba(207,237,252,1)')
   };
   
   const translateAlongPath = (d, i, nodes, startPercent, endPercent) => {
@@ -322,13 +335,17 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
               <feMergeNode in="SourceGraphic"/>
           </feMerge>
         </filter>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="100%">
+          <stop ref={skyRef} offset="0%" style={{ stopColor: 'rgb(207, 237, 252)', stopOpacity: 1 }} />
+          <stop offset="100%" style={{ stopColor: 'rgb(207, 237, 252)', stopOpacity: 0 }} />
+        </linearGradient>
       </defs>
-      <rect ref={gParentRef} width={"100%"} height={1200} fill="#cfedfc" className="sky"></rect>
-      {/* <circle cx="300" cy="300" r="175" fill="url(#grad1)" /> */}
+      <rect ref={gParentRef} width={"100%"} height={800} fill="#cfedfc" className="sky"></rect>
       <g ref={gRef} transform={`translate(${wxh/2}, ${900/2+150})`}>
         <circle cx={'0px'} cy={'0px'} r={radius} fill="#fcd656" filter="url(#glow)"></circle>
       </g>
       <g ref={gTimelineRef} transform={`translate(0, 400)`}></g>
+      <rect width="100%" height={200} y={800} fill="url(#sky)"/>
     </g>
   )
 });

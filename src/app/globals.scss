@@ -248,7 +248,7 @@ ul.places{
 .closest-point{
   position: relative;
   width: 100%;
-  background-color: #cfedfc;
+  // background-color: #cfedfc;
   text-align: center;
   p{
     margin-bottom: 30px;
@@ -259,9 +259,9 @@ ul.places{
 .map-break{
   height: 150px;
   width: 100%;
-  margin-bottom: -150px;
-  background: rgb(255,255,255);
-  background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(207,237,252,1) 100%);
+  // margin-bottom: -150px;
+  // background: rgb(255,255,255);
+  // background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(207,237,252,1) 100%);
   position: relative;
   z-index: 1;
 }
