@@ -147,6 +147,7 @@ const Map = ({ scrollPos }) => {
         currentCity = 'Newfoundland';
       }
       map.setFilter(citiesLayer, ['==', 'name', currentCity]);
+      map.setLayoutProperty(citiesLayer, 'visibility', 'visible');
 
       const centerPoint = pointOnLine(scrollPos)
       const coords = centerPoint.coordinates;

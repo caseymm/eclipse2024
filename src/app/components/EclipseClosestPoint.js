@@ -20,12 +20,12 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
         container: 'map-bottom',
         style: 'mapbox://styles/caseymmiler/clthnthmt010c01qu6t6f5m6v',
         center: globeCenter,
-        zoom: 4
+        zoom: 4,
+        cooperativeGestures: true
       });
 
       // Add GeoJSON layer to the map
       newMap.on('load', function () {
-        newMap.scrollZoom.disable()
 
         let tmp = {
           "type": "Point",
@@ -191,7 +191,6 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
       {isTotality &&
       <p>You are in the path of totality!</p>
       }
-      <div className="map-break"></div>
       <div id="map-bottom" style={{ width: '100%', position: 'relative' }} />
     </div>
   );

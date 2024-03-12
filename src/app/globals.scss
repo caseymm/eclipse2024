@@ -111,7 +111,7 @@ main{
   background: rgb(4,18,41);
   background: linear-gradient(180deg, rgba(4,18,41,1) 0%, rgba(207,237,252,0) 100%);
   position: relative;
-  z-index: 1;
+  z-index: 2;
   text-align: center;
   color: #fff;
   padding-top: 100px;
@@ -162,6 +162,7 @@ main{
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 1;
   .scrubber{
     width: calc(100% - 100px);
     display: inline;
@@ -248,28 +249,25 @@ ul.places{
 .closest-point{
   position: relative;
   width: 100%;
-  // background-color: #cfedfc;
+  margin-top: -245px;
   text-align: center;
   p{
     margin-bottom: 30px;
     padding: 0 10px;
+    position: relative;
+    z-index: 1;
   }
 }
 
-.map-break{
-  height: 150px;
-  width: 100%;
-  // margin-bottom: -150px;
-  // background: rgb(255,255,255);
-  // background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(207,237,252,1) 100%);
-  position: relative;
-  z-index: 1;
+.bottom-gradient{
+  pointer-events: none;
 }
 
 #map-bottom{
-  height: 800px;
+  height: 600px;
   width: 100%;
   margin: auto;
+  position: relative;
   @media(max-width: 600px){
     height: 400px;
   }
