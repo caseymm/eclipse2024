@@ -89,6 +89,8 @@ body {
 body {
   color: rgb(var(--foreground-rgb));
   background-color: #cfedfc;
+  overflow: auto!important;
+  max-height: 100% !important;
   // background: linear-gradient(
   //     to bottom,
   //     transparent,
