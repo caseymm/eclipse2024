@@ -256,7 +256,7 @@ input{
   width: 100%;
   display: inline;
   // margin: 50px auto;
-  margin-bottom: 15px;
+  margin-bottom: 7px;
   text-align: center;
   @media(max-width: 500px){
     font-size: 20px;
@@ -274,7 +274,7 @@ input{
   z-index: 1;
   max-width: 600px;
   width: 100%;
-  @media(max-width: 500px){
+  @media(max-width: 650px){
     width: 90%;
   }
 }
@@ -292,7 +292,7 @@ ul.places{
 .closest-point{
   position: relative;
   width: 100%;
-  margin-top: -100px;
+  margin-top: -50px;
   text-align: center;
   p{
     margin-bottom: 30px;
@@ -308,16 +308,43 @@ ul.places{
 
 #map-bottom{
   height: 800px;
-  width: 100%;
+  width: 75%;
   margin: auto;
   position: relative;
+  border: 3px solid #0077ff;
   @media(max-width: 1300px){
     height: 700px;
   }
   // @media(max-width: 1000px){
   //   height: 600px;
   // }
+  @media(max-width: 700px){
+    width: 90%;
+    height: 400px;
+  }
   @media(max-width: 500px){
     height: 300px;
+  }
+  &::after{
+    content: '';
+    display: block;
+    background-color: #0077ff;
+    height: 100%;
+  }
+}
+
+.footer{
+  background-color: #0077ff;
+  color: #fff;
+  margin-top: -150px;
+  padding-top: 170px;
+  padding-bottom: 20px;
+  font-size: 12px;
+  .info{
+    width: 75%;
+    margin: auto;
+    @media(max-width: 700px){
+      width: 90%;
+    }
   }
 }

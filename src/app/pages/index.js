@@ -83,9 +83,11 @@ export default function Graphic() {
           <div className="graphic">
             <div className="data-body">
               <Geocoder onDataUpdate={handleDataUpdate} initCity={city} />
-              <div style={{display: 'inline', lineHeight: '1.4'}}>
-                will experience a maximum of {data.properties.obscuration} obscuration at {parseAndDisplayTime(data.properties.maxTime, true)}. The eclipse will last a 
-                total of {data.properties.duration}, starting at {parseAndDisplayTime(data.properties.local_data[0].time, true)} and ending 
+              <div style={{lineHeight: '1.4'}}>
+                will experience a maximum of {data.properties.obscuration} obscuration at {parseAndDisplayTime(data.properties.maxTime, true)}. 
+              </div>
+              <div style={{lineHeight: '1.4', marginTop: '8px'}}>
+              The eclipse will last a total of {data.properties.duration}, starting at {parseAndDisplayTime(data.properties.local_data[0].time, true)} and ending 
                 at {parseAndDisplayTime(data.properties.local_data[data.properties.local_data.length - 1].time, true)}.
               </div>
             </div>
@@ -101,6 +103,11 @@ export default function Graphic() {
           <EclipseClosestPoint userLocation={data.geometry.coordinates} isTotality={data.properties.obscuration === "100.0%" ? true : false } />
         </div>
       }
+      <div className="footer">
+        <div className="info">
+          <p>© <a href="https://caseymmiller.com">caseymmiller</a> // Sources: <a href="https://aa.usno.navy.mil/data/SolarEclipses">USNO Eclipse API</a> & <a href="https://science.nasa.gov/solar-system/skywatching/how-is-the-2024-total-solar-eclipse-different-than-the-2017-eclipse/">NASA</a></p>
+        </div>
+      </div>
     </main>
   )
 }

@@ -191,7 +191,7 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
       {isTotality &&
       <p>You are in the path of totality!</p>
       }
-      <div id="map-bottom" style={{ width: '100%', position: 'relative' }} />
+      <div id="map-bottom" />
     </div>
   );
 });
