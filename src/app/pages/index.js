@@ -105,7 +105,7 @@ export default function Graphic() {
       }
       <div className="footer">
         <div className="info">
-          <p>© <a href="https://caseymmiller.com">caseymmiller</a> // Sources: <a href="https://aa.usno.navy.mil/data/SolarEclipses">USNO Eclipse API</a> & <a href="https://science.nasa.gov/solar-system/skywatching/how-is-the-2024-total-solar-eclipse-different-than-the-2017-eclipse/">NASA</a></p>
+          <p>© <a href="https://caseymmiller.com">caseymmiller</a> /  Sources: <a href="https://aa.usno.navy.mil/data/SolarEclipses">USNO Eclipse API</a> & <a href="https://science.nasa.gov/solar-system/skywatching/how-is-the-2024-total-solar-eclipse-different-than-the-2017-eclipse/">NASA</a></p>
         </div>
       </div>
     </main>
