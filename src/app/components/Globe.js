@@ -174,7 +174,7 @@ const Map = ({ scrollPos }) => {
     
   // }, [map, center]);
 
-  return <div id="map-container" style={{ height: '100vh', width: '100%', position: 'absolute' }} />;
+  return <div id="map-container" style={{ width: '100%', position: 'absolute' }} />;
 };
 
 export default Map;
