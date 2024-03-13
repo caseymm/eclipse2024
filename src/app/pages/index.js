@@ -43,17 +43,17 @@ export default function Graphic() {
   };
 
   useEffect(() => {
-    // if (!navigator.geolocation) {
-    //     setData(initialData);
-    // } else {
-    //     navigator.geolocation.getCurrentPosition((position) => {
-    //         getCurrentCity(position.coords.longitude, position.coords.latitude).then(setCity);
-    //         handleDataUpdate(position.coords.longitude, position.coords.latitude)
-    //     }, () => {
-    //         setData(initialData);
-    //     });
-    // }
-    setData(initialData);
+    if (!navigator.geolocation) {
+        setData(initialData);
+    } else {
+        navigator.geolocation.getCurrentPosition((position) => {
+            getCurrentCity(position.coords.longitude, position.coords.latitude).then(setCity);
+            handleDataUpdate(position.coords.longitude, position.coords.latitude)
+        }, () => {
+            setData(initialData);
+        });
+    }
+    // setData(initialData);
   }, []);
 
   
@@ -77,9 +77,7 @@ export default function Graphic() {
       <div className="hed">
         <TitleScroll onScroll={handleScroll} />
       </div>
-      <div className="bridge">
-        <p>Totality times range from xx to yy.</p>
-      </div>
+      <div className="bridge"></div>
       {data &&
         <div>
           <div className="graphic">

@@ -340,12 +340,12 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
           <stop offset="100%" style={{ stopColor: 'rgb(207, 237, 252)', stopOpacity: 0 }} />
         </linearGradient>
       </defs>
-      <rect ref={gParentRef} width={"100%"} height={900} fill="#cfedfc" className="sky"></rect>
-      <g ref={gRef} transform={`translate(${wxh/2}, ${900/2+150})`}>
+      <rect ref={gParentRef} width={"100%"} height={1000} fill="#cfedfc" className="sky"></rect>
+      <g ref={gRef} transform={`translate(${wxh/2}, ${1000/2+220})`}>
         <circle cx={'0px'} cy={'0px'} r={radius} fill="#fcd656" filter="url(#glow)"></circle>
       </g>
-      <g ref={gTimelineRef} transform={`translate(0, 400)`}></g>
-      <rect className="bottom-gradient" width="100%" height={200} y={900} fill="url(#sky)"/>
+      <g ref={gTimelineRef} transform={`translate(0, 450)`}></g>
+      <rect className="bottom-gradient" width="100%" height={120} y={1000} fill="url(#sky)"/>
     </g>
   )
 });

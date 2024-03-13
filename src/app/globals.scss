@@ -88,12 +88,13 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #cfedfc;
+  // background: linear-gradient(
+  //     to bottom,
+  //     transparent,
+  //     rgb(var(--background-end-rgb))
+  //   )
+  //   rgb(var(--background-start-rgb));
 }
 
 main{
@@ -102,6 +103,12 @@ main{
   // justify-content: center;
   // align-items: center;
   // height: 100vh;
+}
+
+#map-container{
+  .mapboxgl-ctrl-bottom-right{
+    display: none;
+  }
 }
 
 .bridge{
@@ -154,6 +161,29 @@ main{
       }
     }
   }
+}
+
+.text-block{
+  text-align: center;
+}
+
+.text {
+  display: none;
+  color: #fff;
+  position: fixed;
+  top: 40px;
+  left: 0px;
+  right: 0px;
+  max-width: 600px;
+  width: 90%;
+  margin: auto;
+  font-size: 22px;
+  line-height: 1.4;
+  font-weight: bold;
+}
+
+.text.visible {
+  display: block;
 }
 
 .graphic{
@@ -227,7 +257,7 @@ input{
 .data-body{
   font-size: 16px;
   position: absolute;
-  margin: 189px auto;
+  margin: 280px auto;
   z-index: 1;
   max-width: 600px;
   width: 100%;
@@ -249,7 +279,7 @@ ul.places{
 .closest-point{
   position: relative;
   width: 100%;
-  margin-top: -245px;
+  margin-top: -100px;
   text-align: center;
   p{
     margin-bottom: 30px;
@@ -264,11 +294,17 @@ ul.places{
 }
 
 #map-bottom{
-  height: 600px;
+  height: 800px;
   width: 100%;
   margin: auto;
   position: relative;
-  @media(max-width: 600px){
-    height: 400px;
+  @media(max-width: 1300px){
+    height: 700px;
+  }
+  // @media(max-width: 1000px){
+  //   height: 600px;
+  // }
+  @media(max-width: 500px){
+    height: 300px;
   }
 }
