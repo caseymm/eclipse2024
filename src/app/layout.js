@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
         <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
         <link rel="icon" href="/favicon.png" type="image/x-icon" />
         <meta property="og:image" content="https://www.eclipse2024.day/eclipse_cover.gif" />
+        <meta property="og:description" content="What will the eclipse look like where you live?" />
         <script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=G-HDXFDE0FLK`}
