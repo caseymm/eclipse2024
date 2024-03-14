@@ -329,7 +329,7 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
       <g ref={gRef} transform={`translate(${wxh/2}, ${1000/2+250})`}>
         <circle cx={'0px'} cy={'0px'} r={radius} fill="#fcd656" filter="url(#glow)"></circle>
       </g>
-      <g ref={gTimelineRef} transform={`translate(0, 500)`}></g>
+      <g ref={gTimelineRef} transform={`translate(0, 530)`}></g>
     </g>
   )
 });

@@ -210,7 +210,7 @@ main{
 }
 
 .graphic{
-  margin-top: -202px;
+  margin-top: -201px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -287,6 +287,9 @@ input{
   @media(max-width: 650px){
     width: 90%;
   }
+  @media(max-width: 500px){
+    max-width: 300px;
+  }
   &::after{
     content: "";
     display: block;
@@ -304,7 +307,7 @@ input{
   position: absolute;
   margin: 315px auto;
   z-index: 1;
-  max-width: 605px;
+  max-width: 610px;
   width: 100%;
   @media(max-width: 650px){
     width: 90%;
