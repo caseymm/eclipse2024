@@ -77,7 +77,11 @@ export default function Graphic() {
       <div className="hed">
         <TitleScroll onScroll={handleScroll} />
       </div>
-      <div className="bridge"></div>
+      <div className="bridge">
+        <div className="cont">
+          <p>Check below to see what the eclipse will look like from you location or other places in the U.S.</p>
+        </div>
+      </div>
       {data &&
         <div>
           <div className="graphic">
