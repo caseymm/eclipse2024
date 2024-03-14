@@ -95,9 +95,9 @@ export default function Graphic() {
   return (
     <main>
       <Map scrollPos={scrollPosition} />
-      <div className="hed">
+      {/* <div className="hed"> */}
         <TitleScroll onScroll={handleScroll} />
-      </div>
+      {/* </div> */}
       <div className="bridge">
         <div className="cont">
           <p>Check below to see what the eclipse will look like in different places throughout the U.S.</p>
