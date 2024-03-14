@@ -109,6 +109,7 @@ main{
 
 #map-container{
   height: 100vh;
+  background-color: #0c121a;
   @media(max-width: 500px){
     height: 95vh;
   }
@@ -122,7 +123,7 @@ main{
   width: 100%;
   display: block;
   background: rgb(4,18,41);
-  background: linear-gradient(180deg, rgba(4,18,41,1) 0%, rgba(207,237,252,0) 100%);
+  background: linear-gradient(180deg, #0c121a 0%, #333333 20%, rgba(207,237,252,0.05) 80%, rgba(207,237,252,0.02) 90%, rgba(207,237,252,0) 100%);
   position: relative;
   z-index: 2;
   text-align: center;
@@ -262,13 +263,14 @@ input{
   border-radius: 0px;
   font-size: 24px;
   font-weight: 500;
-  width: 100%;
+  width: 95%;
   display: inline;
   // margin: 50px auto;
   margin-bottom: 7px;
   text-align: center;
   @media(max-width: 500px){
     font-size: 20px;
+    width: 93%;
   }
   &:focus {outline:none;}
   // &#submit{
@@ -279,7 +281,7 @@ input{
 .cont{
   max-width: 600px;
   width: 100%;
-  margin: 120px auto 40px;
+  margin: 100px auto 40px;
   color: #000;
   font-size: 20px;
   @media(max-width: 650px){
@@ -301,18 +303,22 @@ input{
 
 ul.places{
   position: absolute;
-  background-color: white;
+  background-color: #dcf0fa;
   list-style-type: none;
   li{
-    margin: 5px;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
     font-size: 18px;
+    &:last-of-type{
+      border-bottom-width: 0px;
+    }
   }
 }
 
 .closest-point{
   position: relative;
   width: 100%;
-  margin-top: -500px;
+  margin-top: -460px;
   text-align: center;
   z-index: 2;
   p{
@@ -357,10 +363,12 @@ ul.places{
 .footer{
   background-color: #0077ff;
   color: #fff;
-  margin-top: -150px;
-  padding-top: 170px;
+  margin-top: -93px;
+  padding-top: 111px;
   padding-bottom: 20px;
   font-size: 12px;
+  position: relative;
+  z-index: 1;
   .info{
     width: 75%;
     margin: auto;

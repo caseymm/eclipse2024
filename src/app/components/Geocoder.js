@@ -38,9 +38,33 @@ const Geocoder = React.memo(({ onDataUpdate, initCity }) => {
     setSuggestions([]);
   };
 
+  const handleClearInput = () => {
+    setQuery('');
+    setSuggestions([]);
+  };
+
   return (
     <div style={{width: '100%'}}>
       <input type="text" value={query.replace(', United States', '')} onChange={handleInputChange} />
+      {query && (
+        <button 
+          onClick={handleClearInput} 
+          style={{
+            position: 'absolute', 
+            right: '-11px',
+            transform: 'translateY(-21%)',
+            border: 'none',
+            background: 'none',
+            cursor: 'pointer',
+            fontSize: '40px',
+            height: '40px',
+            width: '40px',
+            top: '-5px'
+          }}
+        >
+          ⤫
+        </button>
+      )}
       <ul className="places">
         {suggestions.map((suggestion) => (
           <li key={suggestion.id} onClick={() => handleResultSelect(suggestion)}>
