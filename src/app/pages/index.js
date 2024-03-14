@@ -100,7 +100,7 @@ export default function Graphic() {
       </div>
       <div className="bridge">
         <div className="cont">
-          <p>Check below to see what the eclipse will look like from you location or other places in the U.S.</p>
+          <p>Check below to see what the eclipse will look like in different places throughout the U.S.</p>
         </div>
       </div>
       {data &&
@@ -108,10 +108,10 @@ export default function Graphic() {
           <div className="graphic">
             <div className="data-body">
               <Geocoder onDataUpdate={handleDataUpdate} initCity={city} />
-              <div style={{lineHeight: '1.4', textAlign: 'center'}}>
-                will experience a maximum of {data.properties.obscuration} obscuration at {parseAndDisplayTime(data.properties.maxTime, true)}. 
+              <div style={{lineHeight: '1.4', textAlign: 'center', fontSize: '20px'}}>
+                will experience a maximum of <b>{data.properties.obscuration.replace('.0%', '%')} obscuration</b> at {parseAndDisplayTime(data.properties.maxTime, true)}. 
               </div>
-              <div style={{lineHeight: '1.4', marginTop: '8px', textAlign: 'center'}}>
+              <div style={{lineHeight: '1.4', marginTop: '29px', textAlign: 'center'}}>
               The eclipse will last a total of {parseDuration(data.properties.duration)}, starting at {parseAndDisplayTime(data.properties.local_data[0].time, true)} and ending 
                 at {parseAndDisplayTime(data.properties.local_data[data.properties.local_data.length - 1].time, true)}.
               </div>

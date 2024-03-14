@@ -119,16 +119,16 @@ main{
 }
 
 .bridge{
-  height: 150px;
+  height: 202px;
   width: 100%;
   display: block;
   background: rgb(4,18,41);
-  background: linear-gradient(180deg, #0c121a 0%, #333333 20%, rgba(207,237,252,0.05) 80%, rgba(207,237,252,0.02) 90%, rgba(207,237,252,0) 100%);
+  background: linear-gradient(180deg, #0c121a 0%, #333333 20%, rgba(207,237,252,0.05) 90%, rgba(207,237,252,0.02) 90%, #cfedfc00 100%);
   position: relative;
   z-index: 2;
   text-align: center;
   color: #fff;
-  padding-top: 100px;
+  // padding-top: 100px;
 }
 
 .hed{
@@ -210,7 +210,7 @@ main{
 }
 
 .graphic{
-  margin-top: -148px;
+  margin-top: -202px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -282,10 +282,20 @@ input{
   max-width: 600px;
   width: 100%;
   margin: 100px auto 40px;
-  color: #000;
+  // color: #000;
   font-size: 20px;
   @media(max-width: 650px){
     width: 90%;
+  }
+  &::after{
+    content: "";
+    display: block;
+    margin: 20px auto;
+    width: 50px;
+    height: 56px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url(../glasses.svg);
   }
 }
 
@@ -294,7 +304,7 @@ input{
   position: absolute;
   margin: 315px auto;
   z-index: 1;
-  max-width: 600px;
+  max-width: 605px;
   width: 100%;
   @media(max-width: 650px){
     width: 90%;
