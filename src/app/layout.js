@@ -6,7 +6,8 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
   title: 'Eclipse 2024',
   description: 'What will the eclipse look like where you live?',
-  image: 'eclipse_cover.gif'
+  image: 'eclipse_cover.gif',
+  icon: 'favicon.png'
 }
 
 export default function RootLayout({ children }) {
