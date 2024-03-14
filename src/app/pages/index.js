@@ -71,19 +71,41 @@ export default function Graphic() {
     }
   }
 
+  function parseDuration(timeString) {
+    const timeParts = timeString.match(/(\d+)([hms])/g) || [];
+    const timeUnits = {
+        h: 'hour',
+        m: 'minute',
+        s: 'second'
+    };
+
+    let parsedParts = timeParts.map(part => {
+        const value = parseInt(part, 10);
+        const unit = timeUnits[part.slice(-1)];
+        return `${value} ${unit}${value > 1 ? 's' : ''}`;
+    });
+
+    if (parsedParts.length > 1) {
+        parsedParts[parsedParts.length - 1] = 'and ' + parsedParts[parsedParts.length - 1];
+    }
+
+    return parsedParts.join(', ').replace(', and', ' and');
+  }
+
   return (
     <main>
       <Map scrollPos={scrollPosition} />
       <div className="hed">
         <TitleScroll onScroll={handleScroll} />
       </div>
-      <div className="bridge">
-        <div className="cont">
-          <p>Check below to see what the eclipse will look like from you location or other places in the U.S.</p>
-        </div>
-      </div>
+      {/* <div className="bridge">
+        
+      </div> */}
       {data &&
         <div>
+          <div className="cont">
+            <p>Check below to see what the eclipse will look like from you location or other places in the U.S.</p>
+          </div>
           <div className="graphic">
             <div className="data-body">
               <Geocoder onDataUpdate={handleDataUpdate} initCity={city} />
@@ -91,7 +113,7 @@ export default function Graphic() {
                 will experience a maximum of {data.properties.obscuration} obscuration at {parseAndDisplayTime(data.properties.maxTime, true)}. 
               </div>
               <div style={{lineHeight: '1.4', marginTop: '8px'}}>
-              The eclipse will last a total of {data.properties.duration}, starting at {parseAndDisplayTime(data.properties.local_data[0].time, true)} and ending 
+              The eclipse will last a total of {parseDuration(data.properties.duration)}, starting at {parseAndDisplayTime(data.properties.local_data[0].time, true)} and ending 
                 at {parseAndDisplayTime(data.properties.local_data[data.properties.local_data.length - 1].time, true)}.
               </div>
             </div>

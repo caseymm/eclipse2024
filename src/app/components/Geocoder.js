@@ -6,7 +6,7 @@ const Geocoder = React.memo(({ onDataUpdate, initCity }) => {
   const [suggestions, setSuggestions] = useState([]);
 
   const handleInputChange = (event) => {
-    const inputValue = event.target.value;
+    const inputValue = event.target.value.replace(', United States', '');
     setQuery(inputValue);
 
     // Call the autocomplete API to get suggestions
@@ -32,7 +32,7 @@ const Geocoder = React.memo(({ onDataUpdate, initCity }) => {
     setQuery(result.place_name.replace(', United States', '')); // Update the input with the selected suggestion
     const longitude = result.center[0];
     const latitude = result.center[1];
-    onDataUpdate(longitude, latitude, result.place_name);
+    onDataUpdate(longitude, latitude, result.place_name.replace(', United States', ''));
 
     // Clear suggestions when an item is selected
     setSuggestions([]);
@@ -40,11 +40,11 @@ const Geocoder = React.memo(({ onDataUpdate, initCity }) => {
 
   return (
     <div style={{width: '100%'}}>
-      <input type="text" value={query} onChange={handleInputChange} />
+      <input type="text" value={query.replace(', United States', '')} onChange={handleInputChange} />
       <ul className="places">
         {suggestions.map((suggestion) => (
           <li key={suggestion.id} onClick={() => handleResultSelect(suggestion)}>
-            {suggestion.place_name}
+            {suggestion.place_name.replace(', United States', '')}
           </li>
         ))}
       </ul>
