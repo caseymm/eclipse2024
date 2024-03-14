@@ -107,7 +107,7 @@ export default function Graphic() {
         <div>
           <div className="graphic">
             <div className="data-body">
-              <Geocoder onDataUpdate={handleDataUpdate} initCity={city} />
+              <Geocoder onDataUpdate={handleDataUpdate} initCity={'Erie, PA'} />
               <div style={{lineHeight: '1.4', textAlign: 'center', fontSize: '20px'}}>
                 will experience a maximum of <b>{data.properties.obscuration.replace('.0%', '%')} obscuration</b> at {parseAndDisplayTime(data.properties.maxTime, true)}. 
               </div>
