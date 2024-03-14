@@ -45,7 +45,7 @@ const Geocoder = React.memo(({ onDataUpdate, initCity }) => {
 
   return (
     <div style={{width: '100%'}}>
-      <input type="text" value={query.replace(', United States', '')} onChange={handleInputChange} />
+      <input placeholder="Erie, PA" type="text" value={query.replace(', United States', '')} onChange={handleInputChange} />
       {query && (
         <button 
           onClick={handleClearInput} 
