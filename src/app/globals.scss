@@ -88,7 +88,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: #0077ff;
+  background-color: #0c121a;
   overflow: auto!important;
   max-height: 100% !important;
   // background: linear-gradient(
@@ -318,7 +318,7 @@ ul.places{
 .closest-point{
   position: relative;
   width: 100%;
-  margin-top: -460px;
+  margin-top: -410px;
   text-align: center;
   z-index: 2;
   p{
@@ -339,6 +339,7 @@ ul.places{
   margin: auto;
   position: relative;
   border: 3px solid #0077ff;
+  border-color: #0c121a;
   @media(max-width: 1300px){
     height: 700px;
   }
@@ -361,7 +362,8 @@ ul.places{
 }
 
 .footer{
-  background-color: #0077ff;
+  // background-color: #0077ff;
+  background-color: #0c121a;;
   color: #fff;
   margin-top: -93px;
   padding-top: 111px;

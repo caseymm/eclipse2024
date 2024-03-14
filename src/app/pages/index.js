@@ -116,7 +116,7 @@ export default function Graphic() {
                 at {parseAndDisplayTime(data.properties.local_data[data.properties.local_data.length - 1].time, true)}.
               </div>
             </div>
-            <svg className="svg-graphic" width={"100%"} height={1500}>
+            <svg className="svg-graphic" width={"100%"} height={1400}>
               <RenderCircle
                 data={data}
                 obscuration={data.properties.obscuration}

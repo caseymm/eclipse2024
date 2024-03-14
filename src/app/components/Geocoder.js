@@ -59,7 +59,8 @@ const Geocoder = React.memo(({ onDataUpdate, initCity }) => {
             fontSize: '40px',
             height: '40px',
             width: '40px',
-            top: '-5px'
+            top: '-5px',
+            color: '#000'
           }}
         >
           ⤫
