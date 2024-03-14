@@ -8,9 +8,6 @@ const Map = ({ scrollPos }) => {
   // const globeCenter = [-89.614, 39.512];
   const globeCenter = [-109.67057, 19.3424];
   const citiesLayer = 'cities-eclipse';
-  // const positions = {
-  //   'Mazatlán'
-  // }
 
   function pointOnLine(pos) {
     let totalLen = centerPath.features[0]['geometry']['coordinates'][0].length;
@@ -29,7 +26,7 @@ const Map = ({ scrollPos }) => {
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2FzZXltbWlsZXIiLCJhIjoiY2lpeHY1bnJ1MDAyOHVkbHpucnB1dGRmbyJ9.TzUoCLwyeDoLjh3tkDSD4w';
     let zoom = 2;
     let moonRadius = 8;
-    if(window.innerWidth < 800){
+    if(window.innerWidth < 1200){
       moonRadius = 6;
       zoom = 1.5;
     }

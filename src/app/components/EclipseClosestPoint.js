@@ -146,10 +146,14 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
         "type": "Point",
         "coordinates": userLocation
       }
+      let coords = closestPoint.geometry.coordinates;
+      if(isTotality){
+        coords = userLocation;
+      }
   
       let end = {
         "type": "Point",
-        "coordinates": closestPoint.geometry.coordinates
+        "coordinates": coords
       }
   
       let line = {
@@ -157,7 +161,7 @@ const EclipseClosestPoint = React.memo(({ userLocation, isTotality }) => {
         'properties': {},
         'geometry': {
             'type': 'LineString',
-            'coordinates': [userLocation, closestPoint.geometry.coordinates]
+            'coordinates': [userLocation, coords]
         }
       }
   

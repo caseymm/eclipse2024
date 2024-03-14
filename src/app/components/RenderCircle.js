@@ -28,7 +28,6 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
   const gTimelineRef = useRef(null);
   const movingElement = useRef(null);
   const filterRef = useRef();
-  const skyRef = useRef();
   const [wxh, setWxh] = useState(800);
 
   function parseAndDisplayTime(timeString, first) {
@@ -54,7 +53,7 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
       console.log('interrupt transition rect')
       d3.select(gParentRef.current)
         .interrupt()
-        .attr('fill', '#cfedfc');
+        .attr('fill', '#c5eafc');
     }
     drawTimeline();
     drawCircles();
@@ -203,7 +202,7 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
     
     moon.current = g.append('circle')
       .attr('r', radius)
-      .attr('fill', '#cfedfc')
+      .attr('fill', '#c5eafc')
       .classed('moon', true);
     
     animateCircle();
@@ -253,7 +252,7 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
       .duration(2500)
       .ease(d3.easeLinear)
       .attr('fill', () => {
-        return length === 5 ? '#2e3778' : "#cfedfc";
+        return length === 5 ? '#2e3778' : "#c5eafc";
       })
     
     moon.current.transition()
@@ -261,7 +260,7 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
       .ease(d3.easeLinear) // Easing for the transform
       .attrTween('transform', (d, i, nodes) => translateAlongPath(d, i, nodes, 0, 0.5))
       .attr('fill', () => {
-        return length === 5 ? '#2e3778' : "#cfedfc";
+        return length === 5 ? '#2e3778' : "#c5eafc";
       })
       .on('end', () => {
         if(length === 5){
@@ -273,12 +272,6 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
         }
       });
     
-    d3.select(skyRef.current).transition()
-      .duration(2500)
-      .ease(d3.easeLinear)
-      .style('stop-color', () => {
-        return length === 5 ? '#2e3778' : 'rgba(207,237,252,1)'
-      })
   };
   
   const animateSecondHalf = () => {
@@ -291,19 +284,15 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
     d3.select(gParentRef.current).transition()
       .duration(2500)
       .ease(d3.easeLinear)
-      .attr("fill", "#cfedfc")
+      .attr("fill", "#c5eafc")
 
     moon.current.transition()
       .duration(2500) // Remaining half duration
       .ease(d3.easeLinear)
       .attrTween('transform', (d, i, nodes) => translateAlongPath(d, i, nodes, 0.5, 1))
-      .attr('fill', "#cfedfc")
+      .attr('fill', "#c5eafc")
       .on('end', animateCircle);
 
-    d3.select(skyRef.current).transition()
-      .duration(2500)
-      .ease(d3.easeLinear)
-      .style("stop-color", 'rgba(207,237,252,1)')
   };
   
   const translateAlongPath = (d, i, nodes, startPercent, endPercent) => {
@@ -335,17 +324,12 @@ const RenderCircle = React.memo(({ data, obscuration, radius, length }) => {
               <feMergeNode in="SourceGraphic"/>
           </feMerge>
         </filter>
-        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="100%">
-          <stop ref={skyRef} offset="0%" style={{ stopColor: 'rgb(207, 237, 252)', stopOpacity: 1 }} />
-          <stop offset="100%" style={{ stopColor: 'rgb(207, 237, 252)', stopOpacity: 0 }} />
-        </linearGradient>
       </defs>
-      <rect ref={gParentRef} width={"100%"} height={1000} fill="#cfedfc" className="sky"></rect>
+      <rect ref={gParentRef} width={"100%"} height={1500} fill="#c5eafc" className="sky"></rect>
       <g ref={gRef} transform={`translate(${wxh/2}, ${1000/2+220})`}>
         <circle cx={'0px'} cy={'0px'} r={radius} fill="#fcd656" filter="url(#glow)"></circle>
       </g>
-      <g ref={gTimelineRef} transform={`translate(0, 450)`}></g>
-      <rect className="bottom-gradient" width="100%" height={120} y={1000} fill="url(#sky)"/>
+      <g ref={gTimelineRef} transform={`translate(0, 470)`}></g>
     </g>
   )
 });

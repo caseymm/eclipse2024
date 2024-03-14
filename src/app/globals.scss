@@ -88,7 +88,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: #cfedfc;
+  background-color: #0077ff;
   overflow: auto!important;
   max-height: 100% !important;
   // background: linear-gradient(
@@ -176,7 +176,9 @@ main{
 }
 
 .text-block{
-  text-align: center;
+  @media(max-width: 1000px){
+    text-align: center;
+  }
 }
 
 .text {
@@ -184,14 +186,19 @@ main{
   color: #fff;
   position: fixed;
   top: 40px;
-  left: 0px;
-  right: 0px;
-  max-width: 600px;
-  width: 90%;
-  margin: auto;
+  left: 40px;
+  width: 400px;
   font-size: 22px;
   line-height: 1.4;
   font-weight: bold;
+  text-shadow: 4px 3px 7px rgba(0,0,0,0.62);
+  @media(max-width: 1000px){
+    left: 0px;
+    right: 0px;
+    margin: auto;
+    max-width: 600px;
+    width: 90%;
+  }
   @media(max-width: 500px){
     font-size: 18px;
   }
@@ -272,7 +279,7 @@ input{
 .cont{
   max-width: 600px;
   width: 100%;
-  margin: 40px auto;
+  margin: 120px auto 40px;
   color: #000;
   font-size: 20px;
   @media(max-width: 650px){
@@ -283,7 +290,7 @@ input{
 .data-body{
   font-size: 16px;
   position: absolute;
-  margin: 255px auto;
+  margin: 315px auto;
   z-index: 1;
   max-width: 600px;
   width: 100%;
@@ -305,8 +312,9 @@ ul.places{
 .closest-point{
   position: relative;
   width: 100%;
-  margin-top: -50px;
+  margin-top: -500px;
   text-align: center;
+  z-index: 2;
   p{
     margin-bottom: 30px;
     padding: 0 10px;
